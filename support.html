@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Support – EBEVON</title>
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    .support-page { padding-top: 72px; }
+    .support-hero { background: linear-gradient(135deg, var(--dark-2), var(--dark-3)); padding: 72px 0; text-align: center; border-bottom: 1px solid var(--border); }
+    .support-hero h1 { color: var(--text); margin-bottom: 12px; }
+    .support-hero p { color: var(--text-muted); max-width: 520px; margin: 0 auto 32px; font-size: 1.05rem; }
+
+    .contact-channels { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; padding: 60px 0; }
+    .channel-card { background: var(--dark-3); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 36px 28px; text-align: center; transition: var(--transition); }
+    .channel-card:hover { border-color: var(--border-gold); transform: translateY(-4px); box-shadow: var(--shadow-gold); }
+    .channel-icon { width: 72px; height: 72px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin: 0 auto 20px; }
+    .channel-card h3 { color: var(--text); font-size: 1.1rem; margin-bottom: 8px; }
+    .channel-card p { color: var(--text-muted); font-size: 0.88rem; margin-bottom: 20px; line-height: 1.6; }
+    .channel-card .ch-detail { font-size: 1.1rem; font-weight: 700; color: var(--gold); margin-bottom: 20px; }
+    .channel-hours { font-size: 0.78rem; color: var(--text-muted); background: var(--dark-4); border-radius: 50px; padding: 4px 14px; display: inline-block; margin-bottom: 20px; }
+
+    /* Contact form */
+    .contact-section { padding: 0 0 80px; }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+    .contact-form-wrap { background: var(--dark-3); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 40px; }
+    .contact-form-wrap h2 { font-size: 1.3rem; color: var(--text); margin-bottom: 6px; }
+    .contact-form-wrap p { color: var(--text-muted); font-size: 0.88rem; margin-bottom: 28px; }
+
+    /* FAQ */
+    .faq-section { background: var(--dark-2); padding: 80px 0; }
+    .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .faq-item { background: var(--dark-3); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+    .faq-q { padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: var(--transition); }
+    .faq-q:hover { color: var(--gold); }
+    .faq-q h4 { font-size: 0.92rem; color: var(--text); font-weight: 600; }
+    .faq-q i { color: var(--gold); transition: var(--transition); flex-shrink: 0; margin-left: 12px; }
+    .faq-a { display: none; padding: 0 24px 20px; font-size: 0.88rem; color: var(--text-muted); line-height: 1.7; border-top: 1px solid var(--border); padding-top: 16px; }
+    .faq-item.open .faq-a { display: block; }
+    .faq-item.open .faq-q i { transform: rotate(180deg); }
+
+    /* Delivery info */
+    .delivery-section { padding: 80px 0; }
+    .delivery-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+    .delivery-card { background: var(--dark-3); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 32px 24px; text-align: center; }
+    .delivery-card i { font-size: 2rem; color: var(--gold); margin-bottom: 16px; display: block; }
+    .delivery-card h4 { color: var(--text); margin-bottom: 10px; font-size: 1rem; }
+    .delivery-card p { color: var(--text-muted); font-size: 0.85rem; line-height: 1.6; }
+
+    @media (max-width: 900px) { .contact-channels { grid-template-columns: 1fr; } .contact-grid { grid-template-columns: 1fr; } .faq-grid { grid-template-columns: 1fr; } .delivery-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="../index.html" class="nav-logo">
+      <img src="../assets/images/logo.jpg" alt="EBEVON" class="logo-img" />
+      <span class="logo-text">EBEVON</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="listings.html">Browse Cars</a></li>
+      <li><a href="sell.html">Sell a Car</a></li>
+      <li><a href="how-it-works.html">How It Works</a></li>
+      <li><a href="support.html" class="active">Support</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="login.html" class="btn-ghost">Log In</a>
+      <a href="signup.html" class="btn-gold">Sign Up</a>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<div class="support-page">
+  <div class="support-hero">
+    <div class="container">
+      <span class="section-tag">We're Here to Help</span>
+      <h1>EBEVON Support</h1>
+      <p>Got a question or need help with a transaction? Our team is available to assist you.</p>
+      <a href="https://wa.me/2348132782330" target="_blank" class="btn-gold" style="font-size:1rem;padding:14px 32px"><i class="fab fa-whatsapp"></i> Chat with Support on WhatsApp</a>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- CHANNELS -->
+    <div class="contact-channels">
+      <div class="channel-card">
+        <div class="channel-icon" style="background:rgba(37,211,102,0.1);color:#25d366"><i class="fab fa-whatsapp"></i></div>
+        <h3>WhatsApp</h3>
+        <p>The fastest way to reach us. Send a message any time — we typically respond within minutes.</p>
+        <div class="ch-detail">0813 278 2330</div>
+        <div class="channel-hours"><i class="fas fa-clock"></i> Mon–Sat: 8am – 9pm</div>
+        <a href="https://wa.me/2348132782330" target="_blank" class="btn-gold" style="width:100%;justify-content:center"><i class="fab fa-whatsapp"></i> Open WhatsApp</a>
+      </div>
+      <div class="channel-card">
+        <div class="channel-icon" style="background:rgba(201,168,76,0.1);color:var(--gold)"><i class="fas fa-phone"></i></div>
+        <h3>Phone Call</h3>
+        <p>Prefer to speak directly? Call our support line and a team member will assist you.</p>
+        <div class="ch-detail">0813 278 2330</div>
+        <div class="channel-hours"><i class="fas fa-clock"></i> Mon–Fri: 9am – 6pm</div>
+        <a href="tel:+2348132782330" class="btn-outline" style="width:100%;justify-content:center"><i class="fas fa-phone"></i> Call Now</a>
+      </div>
+      <div class="channel-card">
+        <div class="channel-icon" style="background:rgba(59,130,246,0.1);color:var(--info)"><i class="fas fa-envelope"></i></div>
+        <h3>Email Support</h3>
+        <p>For detailed inquiries, document submissions, or formal complaints, send us an email.</p>
+        <div class="ch-detail" style="font-size:0.9rem">support@ebevon.com</div>
+        <div class="channel-hours"><i class="fas fa-clock"></i> Response within 24 hours</div>
+        <a href="mailto:support@ebevon.com" class="btn-ghost" style="width:100%;justify-content:center"><i class="fas fa-envelope"></i> Send Email</a>
+      </div>
+    </div>
+
+    <!-- CONTACT FORM + INFO -->
+    <div class="contact-section" id="contact">
+      <div class="contact-grid">
+        <div class="contact-form-wrap">
+          <h2>Send a Message</h2>
+          <p>Fill out the form and we'll get back to you as soon as possible.</p>
+          <form onsubmit="submitContact(event)">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+              <div class="form-group"><label>Full Name</label><input type="text" class="form-control" placeholder="Your name" required /></div>
+              <div class="form-group"><label>Phone / Email</label><input type="text" class="form-control" placeholder="0810… or email" required /></div>
+            </div>
+            <div class="form-group">
+              <label>Subject</label>
+              <select class="form-control">
+                <option>General Inquiry</option>
+                <option>Escrow Dispute</option>
+                <option>Verification Issue</option>
+                <option>Report a Listing</option>
+                <option>Delivery Issue</option>
+                <option>Payment Problem</option>
+                <option>Account Issue</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Message</label><textarea class="form-control" rows="5" placeholder="Describe your issue in detail…" required></textarea></div>
+            <button type="submit" class="btn-gold" style="width:100%;justify-content:center;padding:14px"><i class="fas fa-paper-plane"></i> Send Message</button>
+          </form>
+        </div>
+
+        <div>
+          <h3 style="color:var(--text);margin-bottom:24px">Quick Links</h3>
+          <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:40px">
+            <a href="how-it-works.html" style="display:flex;align-items:center;gap:14px;background:var(--dark-3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;transition:var(--transition)" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">
+              <i class="fas fa-circle-question" style="font-size:1.2rem;color:var(--gold)"></i>
+              <div><div style="font-weight:600;color:var(--text);font-size:0.9rem">How It Works</div><div style="font-size:0.8rem;color:var(--text-muted)">Understand the full buying/selling process</div></div>
+            </a>
+            <a href="#faq" style="display:flex;align-items:center;gap:14px;background:var(--dark-3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;transition:var(--transition)" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">
+              <i class="fas fa-list-check" style="font-size:1.2rem;color:var(--gold)"></i>
+              <div><div style="font-weight:600;color:var(--text);font-size:0.9rem">FAQs</div><div style="font-size:0.8rem;color:var(--text-muted)">Find answers to common questions</div></div>
+            </a>
+            <a href="verify.html" style="display:flex;align-items:center;gap:14px;background:var(--dark-3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;transition:var(--transition)" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">
+              <i class="fas fa-id-card" style="font-size:1.2rem;color:var(--gold)"></i>
+              <div><div style="font-weight:600;color:var(--text);font-size:0.9rem">Seller Verification</div><div style="font-size:0.8rem;color:var(--text-muted)">Complete your ID &amp; face verification</div></div>
+            </a>
+            <a href="#delivery" style="display:flex;align-items:center;gap:14px;background:var(--dark-3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;transition:var(--transition)" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">
+              <i class="fas fa-truck" style="font-size:1.2rem;color:var(--gold)"></i>
+              <div><div style="font-weight:600;color:var(--text);font-size:0.9rem">Delivery Info</div><div style="font-size:0.8rem;color:var(--text-muted)">Learn about our delivery service</div></div>
+            </a>
+          </div>
+          <div style="background:linear-gradient(135deg,rgba(201,168,76,0.1),rgba(201,168,76,0.05));border:1px solid var(--border-gold);border-radius:var(--radius-lg);padding:24px">
+            <h4 style="color:var(--gold);margin-bottom:12px"><i class="fas fa-shield-check"></i> Escrow Disputes</h4>
+            <p style="font-size:0.85rem;color:var(--text-muted);line-height:1.7;margin-bottom:16px">If you have an issue with a transaction — such as a car not matching its listing — contact us immediately. Funds remain in escrow until disputes are resolved.</p>
+            <a href="https://wa.me/2348132782330?text=I have an escrow dispute" target="_blank" class="btn-gold" style="width:100%;justify-content:center"><i class="fab fa-whatsapp"></i> Report Dispute on WhatsApp</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="faq-section" id="faq">
+    <div class="container">
+      <div class="section-header"><span class="section-tag">Common Questions</span><h2>Frequently Asked Questions</h2></div>
+      <div class="faq-grid">
+        <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><h4>How does escrow payment work?</h4><i class="fas fa-chevron-down"></i></div><div class="faq-a">When you buy a car, your payment goes into EBEVON's secure escrow account — not directly to the seller. You inspect the vehicle, and only when you confirm receipt does the seller get paid. This protects both parties.</div></div>
+        <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><h4>How do I become a verified seller?</h4><i class="fas fa-chevron-down"></i></div><div class="faq-a">Sign up, then visit the Seller Verification page. You'll complete a face scan with your device camera and upload a valid government-issued ID (NIN, passport, driver's licence, etc.). Approval takes 24–48 hours.</div></div>
+        <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><h4>Can I list my car without verifying?</h4><i class="fas fa-chevron-down"></i></div><div class="faq-a">No. All sellers must complete ID and face verification before their listings go live. This ensures buyer safety and reduces fraud on the platform.</div></div>
+        <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><h4>Is delivery available across Nigeria?</h4><i class="fas fa-chevron-down"></i></div><div class="faq-a">Yes. We offer delivery across major Nigerian cities and states. Delivery fees are calculated based on distance. The buyer pays delivery cost, and the car is dispatched only after escrow payment is received.</div></div>
+        <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><h4>What happens if the car doesn't match the listing?</h4><i class="fas fa-chevron-down"></i></div><div class="faq-a">Do not confirm receipt. Contact EBEVON support immediately via WhatsApp or phone. Your funds remain in escrow and we will investigate and resolve the dispute. Sellers who misrepresent vehicles face account suspension.</div></div>
+        <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><h4>What is the vehicle health score?</h4><i class="fas fa-chevron-down"></i></div><div class="faq-a">The health score is a percentage declared by the seller showing the overall condition of the vehicle. Only Brand New cars have a 100% bar. It covers engine, transmission, exterior, interior, brakes, and tyres.</div></div>
+        <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><h4>How does EBEVON make money?</h4><i class="fas fa-chevron-down"></i></div><div class="faq-a">EBEVON charges a 2% transaction fee on completed sales, deducted from the seller's payout after the buyer confirms receipt. There are no fees for buyers or for listing cars.</div></div>
+        <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><h4>Can a dealership register on EBEVON?</h4><i class="fas fa-chevron-down"></i></div><div class="faq-a">Yes! When signing up as a seller, dealerships can register their official brand/business name and CAC registration number. A dealership badge will appear on all their listings.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DELIVERY INFO -->
+  <div class="delivery-section" id="delivery">
+    <div class="container">
+      <div class="section-header"><span class="section-tag">Doorstep Service</span><h2>Delivery Information</h2><p>We deliver to your door anywhere in Nigeria.</p></div>
+      <div class="delivery-grid">
+        <div class="delivery-card"><i class="fas fa-map-marked-alt"></i><h4>Nationwide Coverage</h4><p>We deliver to all 36 states and the FCT. Lagos, Abuja, PH, Kano, Ibadan and more are covered with priority service.</p></div>
+        <div class="delivery-card"><i class="fas fa-lock"></i><h4>Escrow-Linked</h4><p>Car is dispatched only after escrow payment is confirmed. Payment is held until you confirm delivery and inspect the vehicle.</p></div>
+        <div class="delivery-card"><i class="fas fa-truck-fast"></i><h4>Tracked Delivery</h4><p>Monitor your delivery in real-time from your buyer dashboard. Get SMS and WhatsApp updates at every stage.</p></div>
+        <div class="delivery-card"><i class="fas fa-shield-halved"></i><h4>Insured Transit</h4><p>All vehicles in transit are fully insured. In the rare event of damage during delivery, you are fully protected.</p></div>
+        <div class="delivery-card"><i class="fas fa-clock"></i><h4>Delivery Timeline</h4><p>Lagos &amp; Abuja: 1–2 days. South-South &amp; South-East: 2–3 days. North &amp; other regions: 3–5 days.</p></div>
+        <div class="delivery-card"><i class="fas fa-comment-dots"></i><h4>Request Delivery</h4><p>Buyers can request delivery directly on the car detail page or by contacting us on WhatsApp at 0813 278 2330.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<a href="https://wa.me/2348132782330" class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+<script src="../assets/js/main.js"></script>
+<script>
+  function toggleFaq(el) {
+    el.parentElement.classList.toggle('open');
+  }
+  function submitContact(e) {
+    e.preventDefault();
+    showFlash('Message sent! We will get back to you shortly.');
+    e.target.reset();
+  }
+</script>
+</body>
+</html>

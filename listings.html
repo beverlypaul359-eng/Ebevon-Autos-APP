@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Browse Cars – EBEVON</title>
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    .listings-page { padding-top: 72px; }
+    .listings-hero { background: linear-gradient(135deg, var(--dark-2), var(--dark-3)); padding: 48px 0 32px; border-bottom: 1px solid var(--border); }
+    .listings-hero h1 { font-size: 1.8rem; color: var(--text); }
+    .listings-hero p { color: var(--text-muted); margin-top: 4px; font-size: 0.9rem; }
+    .listings-body { display: grid; grid-template-columns: 280px 1fr; gap: 32px; padding: 40px 0 80px; }
+
+    /* FILTERS SIDEBAR */
+    .filters-sidebar { position: sticky; top: 88px; height: fit-content; }
+    .filter-card { background: var(--dark-3); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px; }
+    .filter-card h3 { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+    .filter-card h3 button { font-size: 0.78rem; color: var(--gold); background: none; border: none; cursor: pointer; font-family: var(--font-body); }
+    .filter-group { margin-bottom: 28px; }
+    .filter-group-title { font-size: 0.82rem; color: var(--text); font-weight: 600; margin-bottom: 12px; }
+    .filter-group select, .filter-group input[type=range] { width: 100%; }
+    .filter-group select { background: var(--dark-4); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; font-size: 0.88rem; }
+    .price-range-vals { display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--gold); margin-top: 6px; }
+    input[type=range] { accent-color: var(--gold); }
+    .checkbox-list { display: flex; flex-direction: column; gap: 10px; }
+    .checkbox-list label { display: flex; align-items: center; gap: 10px; font-size: 0.87rem; color: var(--text-muted); cursor: pointer; }
+    .checkbox-list input { accent-color: var(--gold); }
+    .apply-filters { width: 100%; padding: 12px; margin-top: 4px; font-size: 0.9rem; justify-content: center; }
+
+    /* RESULTS */
+    .results-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
+    .results-count { font-size: 0.9rem; color: var(--text-muted); }
+    .results-count span { color: var(--gold); font-weight: 700; }
+    .sort-bar { display: flex; align-items: center; gap: 10px; }
+    .sort-bar label { font-size: 0.82rem; color: var(--text-muted); }
+    .sort-bar select { background: var(--dark-4); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; font-size: 0.85rem; }
+    .view-toggle button { width: 36px; height: 36px; border-radius: 8px; border: 1px solid var(--border); background: var(--dark-4); color: var(--text-muted); transition: var(--transition); }
+    .view-toggle button.active { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,0.08); }
+
+    .cars-grid-listings { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .cars-grid-listings.list-view { grid-template-columns: 1fr; }
+    .cars-grid-listings.list-view .car-card { display: grid; grid-template-columns: 260px 1fr; }
+    .cars-grid-listings.list-view .car-card-img { height: 100%; min-height: 180px; }
+
+    .no-results { text-align: center; padding: 80px 24px; grid-column: 1/-1; }
+    .no-results i { font-size: 3rem; color: var(--border); margin-bottom: 16px; display: block; }
+    .no-results p { color: var(--text-muted); }
+
+    .pagination { display: flex; justify-content: center; gap: 8px; margin-top: 48px; }
+    .page-btn { width: 40px; height: 40px; border-radius: 8px; border: 1px solid var(--border); background: var(--dark-4); color: var(--text-muted); font-size: 0.9rem; transition: var(--transition); }
+    .page-btn:hover, .page-btn.active { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,0.1); }
+
+    .seller-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 0.7rem; color: var(--gold); background: rgba(201,168,76,0.1); border: 1px solid var(--border-gold); border-radius: 50px; padding: 2px 8px; margin-left: 6px; }
+
+    @media (max-width: 960px) { .listings-body { grid-template-columns: 1fr; } .filters-sidebar { position: static; } .cars-grid-listings { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 560px) { .cars-grid-listings { grid-template-columns: 1fr; } .cars-grid-listings.list-view .car-card { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="../index.html" class="nav-logo">
+      <img src="../assets/images/logo.jpg" alt="EBEVON" class="logo-img" />
+      <span class="logo-text">EBEVON</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="listings.html" class="active">Browse Cars</a></li>
+      <li><a href="sell.html">Sell a Car</a></li>
+      <li><a href="how-it-works.html">How It Works</a></li>
+      <li><a href="support.html">Support</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="login.html" class="btn-ghost">Log In</a>
+      <a href="signup.html" class="btn-gold">Sign Up</a>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<div class="listings-page">
+  <div class="listings-hero">
+    <div class="container">
+      <h1>Browse All Cars</h1>
+      <p>Showing <span id="listingCount" style="color:var(--gold);font-weight:700">48</span> verified listings across Nigeria</p>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="listings-body">
+
+      <!-- SIDEBAR -->
+      <aside class="filters-sidebar">
+        <div class="filter-card">
+          <h3>Filters <button onclick="resetFilters()">Reset All</button></h3>
+
+          <div class="filter-group">
+            <div class="filter-group-title">Brand</div>
+            <select id="filterBrand" onchange="applyFilters()">
+              <option value="">All Brands</option>
+              <option>BMW</option><option>Mercedes-Benz</option><option>Toyota</option>
+              <option>Honda</option><option>Lexus</option><option>Tesla</option>
+              <option>Porsche</option><option>Audi</option><option>Ford</option>
+              <option>Range Rover</option><option>Lamborghini</option><option>Rolls-Royce</option>
+              <option>Kia</option><option>Hyundai</option><option>Nissan</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <div class="filter-group-title">Condition</div>
+            <div class="checkbox-list">
+              <label><input type="checkbox" value="Brand New" onchange="applyFilters()" class="cond-check" checked /> Brand New</label>
+              <label><input type="checkbox" value="Foreign Used" onchange="applyFilters()" class="cond-check" checked /> Foreign Used</label>
+              <label><input type="checkbox" value="Nigerian Used" onchange="applyFilters()" class="cond-check" checked /> Nigerian Used</label>
+            </div>
+          </div>
+
+          <div class="filter-group">
+            <div class="filter-group-title">Max Price: <span id="priceLabel" style="color:var(--gold)">₦100M</span></div>
+            <input type="range" id="priceRange" min="1000000" max="200000000" step="1000000" value="200000000" oninput="updatePrice(this)" />
+            <div class="price-range-vals"><span>₦1M</span><span>₦200M</span></div>
+          </div>
+
+          <div class="filter-group">
+            <div class="filter-group-title">Year</div>
+            <select id="filterYear" onchange="applyFilters()">
+              <option value="">Any Year</option>
+              <option>2026</option><option>2025</option><option>2024</option>
+              <option>2023</option><option>2022</option><option>2021</option>
+              <option>2020</option><option>2019</option><option>2018 &amp; older</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <div class="filter-group-title">Fuel Type</div>
+            <div class="checkbox-list">
+              <label><input type="checkbox" value="Petrol" class="fuel-check" onchange="applyFilters()" checked /> Petrol</label>
+              <label><input type="checkbox" value="Diesel" class="fuel-check" onchange="applyFilters()" checked /> Diesel</label>
+              <label><input type="checkbox" value="Hybrid" class="fuel-check" onchange="applyFilters()" checked /> Hybrid</label>
+              <label><input type="checkbox" value="Electric" class="fuel-check" onchange="applyFilters()" checked /> Electric</label>
+            </div>
+          </div>
+
+          <div class="filter-group">
+            <div class="filter-group-title">Location</div>
+            <select id="filterLocation" onchange="applyFilters()">
+              <option value="">All States</option>
+              <option>Lagos</option><option>Abuja</option><option>Rivers</option>
+              <option>Kano</option><option>Ogun</option><option>Oyo</option>
+              <option>Delta</option><option>Enugu</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <div class="filter-group-title">Min Health Score</div>
+            <input type="range" id="healthRange" min="0" max="100" step="5" value="0" oninput="updateHealth(this)" />
+            <div class="price-range-vals"><span>Any</span><span id="healthLabel" style="color:var(--gold)">0%+</span></div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- RESULTS -->
+      <div class="results-area">
+        <div class="results-header">
+          <div class="results-count">Showing <span id="shownCount">12</span> of <span id="totalCount">48</span> cars</div>
+          <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+            <div class="sort-bar">
+              <label>Sort:</label>
+              <select id="sortSelect" onchange="applyFilters()">
+                <option value="newest">Newest First</option>
+                <option value="price_asc">Price: Low to High</option>
+                <option value="price_desc">Price: High to Low</option>
+                <option value="health">Best Health</option>
+              </select>
+            </div>
+            <div class="view-toggle">
+              <button id="gridViewBtn" class="active" onclick="setView('grid')" title="Grid view"><i class="fas fa-grip"></i></button>
+              <button id="listViewBtn" onclick="setView('list')" title="List view"><i class="fas fa-list"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="cars-grid-listings" id="carsGrid"></div>
+
+        <div class="pagination" id="pagination"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<a href="https://wa.me/2348132782330" class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+
+<script src="../assets/js/main.js"></script>
+<script src="../assets/js/listings.js"></script>
+</body>
+</html>

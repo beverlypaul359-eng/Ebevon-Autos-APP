@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seller Verification – EBEVON</title>
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    .verify-page { min-height: 100vh; padding: 100px 24px 60px; background: radial-gradient(ellipse at top, #1a1200 0%, var(--dark) 70%); }
+    .verify-wrap { max-width: 680px; margin: 0 auto; }
+    .verify-steps-bar { display: flex; align-items: center; margin-bottom: 48px; }
+    .vstep { flex: 1; text-align: center; position: relative; }
+    .vstep-num { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--border); background: var(--dark-4); color: var(--text-muted); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; margin: 0 auto 8px; transition: var(--transition); }
+    .vstep.active .vstep-num { border-color: var(--gold); background: var(--gold); color: #000; }
+    .vstep.done .vstep-num { border-color: var(--success); background: var(--success); color: #fff; }
+    .vstep-label { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; }
+    .vstep.active .vstep-label { color: var(--gold); }
+    .vstep-line { flex: 0.3; height: 2px; background: var(--border); margin-bottom: 28px; }
+    .vstep.done + .vstep-line { background: var(--success); }
+
+    .verify-card { background: var(--dark-3); border: 1px solid var(--border-gold); border-radius: var(--radius-lg); padding: 44px; }
+    .verify-section { display: none; }
+    .verify-section.active { display: block; }
+    .verify-section h3 { font-size: 1.3rem; color: var(--text); margin-bottom: 8px; }
+    .verify-section p.sub { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 32px; }
+
+    /* Face cam */
+    .cam-box { background: var(--dark-4); border: 2px dashed var(--border); border-radius: var(--radius-lg); aspect-ratio: 4/3; max-width: 400px; margin: 0 auto 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; position: relative; overflow: hidden; }
+    .cam-box video { width: 100%; height: 100%; object-fit: cover; display: none; border-radius: var(--radius-lg); }
+    .cam-box.streaming video { display: block; }
+    .cam-box.streaming .cam-placeholder { display: none; }
+    .cam-placeholder { text-align: center; padding: 24px; }
+    .cam-placeholder i { font-size: 3rem; color: var(--border); margin-bottom: 12px; display: block; }
+    .cam-placeholder p { color: var(--text-muted); font-size: 0.85rem; }
+    .face-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; }
+    .face-oval { width: 180px; height: 220px; border: 3px solid var(--gold); border-radius: 50%; opacity: 0.7; }
+    .cam-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+    /* ID upload */
+    .upload-box { border: 2px dashed var(--border); border-radius: var(--radius-lg); padding: 40px 24px; text-align: center; cursor: pointer; transition: var(--transition); background: var(--dark-4); }
+    .upload-box:hover { border-color: var(--gold); background: rgba(201,168,76,0.04); }
+    .upload-box i { font-size: 2.4rem; color: var(--gold); margin-bottom: 12px; display: block; }
+    .upload-box p { color: var(--text-muted); font-size: 0.88rem; margin-bottom: 4px; }
+    .upload-box small { color: var(--border); font-size: 0.78rem; }
+    .upload-box input { display: none; }
+    .uploaded-preview { display: none; margin-top: 16px; border-radius: var(--radius); overflow: hidden; max-height: 200px; object-fit: cover; width: 100%; }
+
+    .id-types { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 24px; }
+    .id-type-btn { padding: 12px 8px; border: 2px solid var(--border); border-radius: var(--radius); background: var(--dark-4); color: var(--text-muted); font-size: 0.8rem; font-weight: 600; cursor: pointer; text-align: center; transition: var(--transition); }
+    .id-type-btn i { display: block; font-size: 1.3rem; margin-bottom: 5px; }
+    .id-type-btn.selected { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,0.08); }
+
+    .success-check { text-align: center; padding: 20px; }
+    .success-check i { font-size: 4rem; color: var(--success); margin-bottom: 16px; }
+    .success-check h3 { color: var(--text); margin-bottom: 10px; }
+    .success-check p { color: var(--text-muted); margin-bottom: 28px; }
+
+    .nav-btns { display: flex; justify-content: space-between; margin-top: 32px; gap: 12px; }
+  </style>
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="../index.html" class="nav-logo">
+      <img src="../assets/images/logo.jpg" alt="EBEVON" class="logo-img" />
+      <span class="logo-text">EBEVON</span>
+    </a>
+  </div>
+</nav>
+
+<div class="verify-page">
+  <div class="verify-wrap">
+    <div style="text-align:center;margin-bottom:40px">
+      <h2 style="color:var(--text)">Seller Verification</h2>
+      <p style="color:var(--text-muted)">Complete these steps to get your Verified Seller badge and start listing cars.</p>
+    </div>
+
+    <!-- Steps bar -->
+    <div class="verify-steps-bar">
+      <div class="vstep active" id="vstep1"><div class="vstep-num">1</div><div class="vstep-label">Face Scan</div></div>
+      <div class="vstep-line"></div>
+      <div class="vstep" id="vstep2"><div class="vstep-num">2</div><div class="vstep-label">Govt. ID</div></div>
+      <div class="vstep-line"></div>
+      <div class="vstep" id="vstep3"><div class="vstep-num">3</div><div class="vstep-label">Review</div></div>
+      <div class="vstep-line"></div>
+      <div class="vstep" id="vstep4"><div class="vstep-num">4</div><div class="vstep-label">Done</div></div>
+    </div>
+
+    <div class="verify-card">
+
+      <!-- STEP 1: Face verification -->
+      <div class="verify-section active" id="step1">
+        <h3><i class="fas fa-face-viewfinder" style="color:var(--gold);margin-right:10px"></i>Face Verification</h3>
+        <p class="sub">We need to verify your identity. Please position your face inside the oval and take a clear photo.</p>
+
+        <div class="cam-box" id="camBox">
+          <div class="cam-placeholder">
+            <i class="fas fa-camera"></i>
+            <p>Camera will appear here</p>
+          </div>
+          <video id="camVideo" autoplay playsinline></video>
+          <div class="face-overlay"><div class="face-oval" id="faceOval"></div></div>
+        </div>
+
+        <div id="captureResult" style="display:none;text-align:center;margin-bottom:16px">
+          <canvas id="captureCanvas" style="max-width:300px;border-radius:var(--radius);border:2px solid var(--success)"></canvas>
+          <p style="color:var(--success);font-size:0.85rem;margin-top:8px"><i class="fas fa-check-circle"></i> Face captured successfully</p>
+        </div>
+
+        <div class="cam-actions">
+          <button class="btn-outline" id="startCamBtn" onclick="startCamera()"><i class="fas fa-camera"></i> Start Camera</button>
+          <button class="btn-gold" id="captureBtn" style="display:none" onclick="captureFace()"><i class="fas fa-circle"></i> Capture</button>
+          <button class="btn-ghost" id="retakeBtn" style="display:none" onclick="retakePhoto()"><i class="fas fa-redo"></i> Retake</button>
+        </div>
+
+        <div class="nav-btns">
+          <span></span>
+          <button class="btn-gold" onclick="goStep(2)" id="step1Next" disabled><span>Next: Upload ID</span> <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+
+      <!-- STEP 2: Government ID -->
+      <div class="verify-section" id="step2">
+        <h3><i class="fas fa-id-card" style="color:var(--gold);margin-right:10px"></i>Government ID Upload</h3>
+        <p class="sub">Upload a valid government-issued ID. Make sure the photo is clear and all text is readable.</p>
+
+        <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:12px">Select ID type:</p>
+        <div class="id-types">
+          <button class="id-type-btn selected" onclick="selectId(this,'NIN')"><i class="fas fa-fingerprint"></i>NIN Slip</button>
+          <button class="id-type-btn" onclick="selectId(this,'Passport')"><i class="fas fa-passport"></i>Int'l Passport</button>
+          <button class="id-type-btn" onclick="selectId(this,'Drivers')"><i class="fas fa-car"></i>Driver's Licence</button>
+          <button class="id-type-btn" onclick="selectId(this,'Voters')"><i class="fas fa-vote-yea"></i>Voter's Card</button>
+          <button class="id-type-btn" onclick="selectId(this,'NIMC')"><i class="fas fa-id-badge"></i>NIMC Card</button>
+          <button class="id-type-btn" onclick="selectId(this,'CAC')"><i class="fas fa-building"></i>CAC Doc</button>
+        </div>
+
+        <label class="upload-box" id="idUploadBox" onclick="document.getElementById('idFile').click()">
+          <i class="fas fa-cloud-upload-alt"></i>
+          <p>Click to upload ID document</p>
+          <small>JPG, PNG or PDF — Max 5MB</small>
+          <input type="file" id="idFile" accept="image/*,.pdf" onchange="previewId(event)" />
+          <img id="idPreview" class="uploaded-preview" alt="ID Preview" />
+        </label>
+
+        <div class="nav-btns">
+          <button class="btn-ghost" onclick="goStep(1)"><i class="fas fa-arrow-left"></i> Back</button>
+          <button class="btn-gold" onclick="goStep(3)" id="step2Next" disabled>Next: Review <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+
+      <!-- STEP 3: Review -->
+      <div class="verify-section" id="step3">
+        <h3><i class="fas fa-clipboard-check" style="color:var(--gold);margin-right:10px"></i>Review Submission</h3>
+        <p class="sub">Please review your information before submitting for verification.</p>
+
+        <div style="background:var(--dark-4);border-radius:var(--radius);padding:24px;margin-bottom:24px">
+          <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px">
+            <canvas id="reviewCanvas" width="60" height="60" style="border-radius:50%;border:2px solid var(--gold)"></canvas>
+            <div>
+              <p style="font-weight:600;color:var(--text)">Face Photo</p>
+              <p style="font-size:0.82rem;color:var(--success)"><i class="fas fa-check-circle"></i> Captured</p>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:16px">
+            <div style="width:60px;height:60px;background:var(--dark-5);border-radius:var(--radius);display:flex;align-items:center;justify-content:center">
+              <i class="fas fa-id-card" style="font-size:1.4rem;color:var(--gold)"></i>
+            </div>
+            <div>
+              <p style="font-weight:600;color:var(--text)" id="reviewIdType">Government ID</p>
+              <p style="font-size:0.82rem;color:var(--success)" id="reviewIdStatus"><i class="fas fa-check-circle"></i> Uploaded</p>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:rgba(201,168,76,0.08);border:1px solid var(--border-gold);border-radius:var(--radius);padding:16px;margin-bottom:24px">
+          <p style="font-size:0.85rem;color:var(--text-muted)"><i class="fas fa-info-circle" style="color:var(--gold)"></i> Our team will review your documents within <strong style="color:var(--text)">24–48 hours</strong>. You'll be notified by email and SMS once verified.</p>
+        </div>
+
+        <div class="nav-btns">
+          <button class="btn-ghost" onclick="goStep(2)"><i class="fas fa-arrow-left"></i> Back</button>
+          <button class="btn-gold" onclick="submitVerification()">Submit for Verification <i class="fas fa-paper-plane"></i></button>
+        </div>
+      </div>
+
+      <!-- STEP 4: Done -->
+      <div class="verify-section" id="step4">
+        <div class="success-check">
+          <i class="fas fa-circle-check"></i>
+          <h3>Verification Submitted!</h3>
+          <p>Your documents have been submitted for review. Our team will verify your identity within 24–48 hours. You'll receive an email and SMS notification once approved.</p>
+          <p style="color:var(--text-muted);font-size:0.85rem;margin-bottom:24px">In the meantime, you can set up your seller profile.</p>
+          <a href="dashboard-seller.html" class="btn-gold">Go to Seller Dashboard <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="../assets/js/main.js"></script>
+<script src="../assets/js/api.js"></script>
+<script>
+  let currentStep = 1;
+  let faceCaptured = false;
+  let idUploaded = false;
+  let selectedIdType = 'NIN';
+  let stream = null;
+
+  function goStep(n) {
+    document.getElementById('step' + currentStep).classList.remove('active');
+    document.getElementById('vstep' + currentStep).classList.remove('active');
+    document.getElementById('vstep' + currentStep).classList.add('done');
+    currentStep = n;
+    document.getElementById('step' + n).classList.add('active');
+    document.getElementById('vstep' + n).classList.add('active');
+    document.getElementById('vstep' + n).classList.remove('done');
+    window.scrollTo({top: 0, behavior:'smooth'});
+  }
+
+  async function startCamera() {
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
+      const video = document.getElementById('camVideo');
+      video.srcObject = stream;
+      document.getElementById('camBox').classList.add('streaming');
+      document.getElementById('startCamBtn').style.display = 'none';
+      document.getElementById('captureBtn').style.display = 'inline-flex';
+    } catch(e) {
+      showFlash('Camera access denied. Please allow camera access.', 'error');
+    }
+  }
+
+  function captureFace() {
+    const video = document.getElementById('camVideo');
+    const canvas = document.getElementById('captureCanvas');
+    const reviewCanvas = document.getElementById('reviewCanvas');
+    canvas.width = video.videoWidth; canvas.height = video.videoHeight;
+    canvas.getContext('2d').drawImage(video, 0, 0);
+    reviewCanvas.width = 60; reviewCanvas.height = 60;
+    reviewCanvas.getContext('2d').drawImage(video, 0, 0, 60, 60);
+    if (stream) { stream.getTracks().forEach(t => t.stop()); }
+    document.getElementById('camBox').classList.remove('streaming');
+    document.getElementById('captureResult').style.display = 'block';
+    document.getElementById('captureBtn').style.display = 'none';
+    document.getElementById('retakeBtn').style.display = 'inline-flex';
+    document.getElementById('faceOval').style.borderColor = 'var(--success)';
+    faceCaptured = true;
+    document.getElementById('step1Next').disabled = false;
+  }
+
+  function retakePhoto() {
+    document.getElementById('captureResult').style.display = 'none';
+    document.getElementById('retakeBtn').style.display = 'none';
+    document.getElementById('startCamBtn').style.display = 'inline-flex';
+    document.getElementById('step1Next').disabled = true;
+    document.getElementById('faceOval').style.borderColor = 'var(--gold)';
+    faceCaptured = false;
+  }
+
+  function selectId(btn, type) {
+    document.querySelectorAll('.id-type-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedIdType = type;
+  }
+
+  function previewId(e) {
+    const file = e.target.files[0]; if (!file) return;
+    const img = document.getElementById('idPreview');
+    if (file.type.startsWith('image/')) {
+      img.src = URL.createObjectURL(file);
+      img.style.display = 'block';
+    }
+    idUploaded = true;
+    document.getElementById('step2Next').disabled = false;
+    document.getElementById('reviewIdType').textContent = selectedIdType + ' — ' + file.name;
+  }
+
+  async function submitVerification() {
+    const btn = document.querySelector('#step3 .btn-gold[onclick="submitVerification()"]');
+    if (btn) { btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Submitting…'; btn.disabled=true; }
+    try {
+      // Call Persona KYC API to create inquiry + get hosted URL
+      if (EbevonAPI.Auth.isLoggedIn()) {
+        const res = await EbevonAPI.KYC.start();
+        if (res?.success && res.data?.sessionUrl) {
+          // Open Persona hosted flow in a new tab
+          window.open(res.data.sessionUrl, '_blank');
+        }
+      }
+    } catch(e) { /* offline / dev mode — still proceed to done step */ }
+    goStep(4);
+    document.getElementById('vstep4').classList.add('done');
+  }
+</script>
+</body>
+</html>

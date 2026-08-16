@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Log In – EBEVON</title>
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    .auth-page{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:100px 24px 60px;background:radial-gradient(ellipse at top,#1a1200 0%,var(--dark) 60%)}
+    .auth-card{background:var(--dark-3);border:1px solid var(--border-gold);border-radius:var(--radius-lg);padding:48px 44px;width:100%;max-width:460px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+    .auth-logo{text-align:center;margin-bottom:28px}
+    .auth-logo img{height:52px;width:52px;object-fit:contain;margin:0 auto 10px;display:block}
+    .auth-logo h1{font-size:1.1rem;color:var(--gold);letter-spacing:3px}
+    .auth-title{text-align:center;margin-bottom:28px}
+    .auth-title h2{font-size:1.5rem;color:var(--text);margin-bottom:6px}
+    .auth-title p{color:var(--text-muted);font-size:.88rem}
+    .auth-footer{text-align:center;margin-top:20px;font-size:.88rem;color:var(--text-muted)}
+    .auth-footer a{color:var(--gold);font-weight:600}
+    .password-wrap{position:relative}
+    .password-wrap .form-control{padding-right:48px}
+    .toggle-pw{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--text-muted);cursor:pointer}
+    .divider{display:flex;align-items:center;gap:12px;margin:20px 0;color:var(--text-muted);font-size:.8rem}
+    .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
+    .oauth-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:0}
+    .oauth-btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:11px 16px;border-radius:var(--radius);border:1px solid var(--border);background:var(--dark-4);color:var(--text);font-size:.88rem;font-weight:500;cursor:pointer;transition:var(--transition)}
+    .oauth-btn:hover{border-color:var(--gold);color:var(--gold)}
+    .passkey-btn{width:100%;padding:13px;background:rgba(201,168,76,.08);border:1px solid var(--border-gold);color:var(--gold);border-radius:var(--radius);font-weight:600;font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:var(--transition);margin-bottom:0}
+    .passkey-btn:hover{background:rgba(201,168,76,.15)}
+    .tab-btns{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:24px}
+    .tab-btn{padding:11px;text-align:center;font-size:.88rem;font-weight:600;color:var(--text-muted);cursor:pointer;background:var(--dark-4);border:none;transition:var(--transition)}
+    .tab-btn.active{background:var(--gold);color:#000}
+    .otp-inputs{display:flex;gap:8px;justify-content:center;margin:20px 0}
+    .otp-input{width:48px;height:56px;text-align:center;font-size:1.4rem;font-weight:700;font-family:var(--font-head);background:var(--dark-4);border:2px solid var(--border);border-radius:var(--radius);color:var(--text);transition:var(--transition)}
+    .otp-input:focus{border-color:var(--gold);outline:none}
+    .form-panel{display:none}
+    .form-panel.active{display:block}
+  </style>
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="../index.html" class="nav-logo">
+      <img src="../assets/images/logo.jpg" alt="EBEVON" class="logo-img" />
+      <span class="logo-text">EBEVON</span>
+    </a>
+    <div class="nav-actions" style="margin-left:auto">
+      <a href="signup.html" class="btn-gold">Sign Up</a>
+    </div>
+  </div>
+</nav>
+
+<div class="auth-page">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <img src="../assets/images/logo.jpg" alt="EBEVON" class="logo-img" />
+      <h1>EBEVON</h1>
+    </div>
+    <div class="auth-title">
+      <h2>Welcome Back</h2>
+      <p>Log in to your EBEVON account</p>
+    </div>
+
+    <!-- Tab selector -->
+    <div class="tab-btns">
+      <button class="tab-btn active" onclick="switchTab('password')">Password</button>
+      <button class="tab-btn" onclick="switchTab('otp')">OTP / Passkey</button>
+    </div>
+
+    <!-- PASSWORD LOGIN -->
+    <div class="form-panel active" id="panel-password">
+      <form onsubmit="handlePasswordLogin(event)">
+        <div class="form-group">
+          <label>Email or Phone <span class="req">*</span></label>
+          <input type="text" class="form-control" id="loginId" placeholder="you@email.com or 0810…" required />
+        </div>
+        <div class="form-group">
+          <label>Password <span class="req">*</span></label>
+          <div class="password-wrap">
+            <input type="password" class="form-control" id="pwField" placeholder="Your password" required />
+            <i class="fas fa-eye toggle-pw" onclick="togglePw('pwField',this)"></i>
+          </div>
+        </div>
+        <div style="text-align:right;font-size:.82rem;margin:-8px 0 20px"><a href="#" style="color:var(--gold)" onclick="showForgot()">Forgot password?</a></div>
+        <button type="submit" class="btn-gold" style="width:100%;justify-content:center;padding:15px;font-size:1rem" id="loginBtn">
+          Log In <i class="fas fa-arrow-right"></i>
+        </button>
+      </form>
+    </div>
+
+    <!-- OTP / PASSKEY LOGIN -->
+    <div class="form-panel" id="panel-otp">
+      <!-- Step 1: enter identifier -->
+      <div id="otpStep1">
+        <div class="form-group">
+          <label>Email or Phone</label>
+          <input type="text" class="form-control" id="otpIdentifier" placeholder="you@email.com or 0810…" />
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <button class="btn-gold" style="justify-content:center;padding:13px" onclick="sendLoginOtp()">
+            <i class="fas fa-sms"></i> Send OTP
+          </button>
+          <button class="passkey-btn" style="margin:0" onclick="loginWithPasskey()">
+            <i class="fas fa-fingerprint"></i> Passkey
+          </button>
+        </div>
+      </div>
+      <!-- Step 2: enter OTP -->
+      <div id="otpStep2" style="display:none">
+        <p style="color:var(--text-muted);font-size:.88rem;text-align:center;margin-bottom:4px">Enter the 6-digit code sent to</p>
+        <p style="color:var(--gold);font-weight:600;text-align:center;margin-bottom:16px" id="otpTargetLabel"></p>
+        <div class="otp-inputs" id="otpBoxes"></div>
+        <button class="btn-gold" style="width:100%;justify-content:center;padding:14px" onclick="verifyLoginOtp()">
+          <i class="fas fa-check-circle"></i> Verify & Log In
+        </button>
+        <p style="text-align:center;margin-top:14px;font-size:.82rem;color:var(--text-muted)">
+          Didn't get it? <a href="#" style="color:var(--gold)" onclick="sendLoginOtp()">Resend</a>
+        </p>
+      </div>
+    </div>
+
+    <!-- OAuth -->
+    <div class="divider">or continue with</div>
+    <div class="oauth-btns">
+      <button class="oauth-btn" onclick="EbevonAPI.Auth.googleLogin()">
+        <img src="https://www.svgrepo.com/show/475656/google-color.svg" width="18" alt="G"/> Google
+      </button>
+      <button class="oauth-btn" onclick="EbevonAPI.Auth.facebookLogin()">
+        <i class="fab fa-facebook" style="color:#1877f2"></i> Facebook
+      </button>
+    </div>
+
+    <div class="auth-footer">Don't have an account? <a href="signup.html">Sign up free</a></div>
+    <div class="auth-footer">Selling a car? <a href="signup.html?role=seller">Register as Seller</a></div>
+  </div>
+</div>
+
+<script src="../assets/js/main.js"></script>
+<script src="../assets/js/api.js"></script>
+<script src="https://unpkg.com/@simplewebauthn/browser/dist/bundle/index.umd.min.js"></script>
+<script>
+  // Handle OAuth redirect
+  if (EbevonAPI.Auth.handleOAuthRedirect()) {
+    showFlash('Logged in with social account!');
+    setTimeout(() => window.location.href = 'dashboard-buyer.html', 1000);
+  }
+  // If already logged in
+  if (EbevonAPI.Auth.isLoggedIn()) window.location.href = 'dashboard-buyer.html';
+
+  function switchTab(tab) {
+    document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', (tab==='password'&&i===0)||(tab==='otp'&&i===1)));
+    document.getElementById('panel-password').classList.toggle('active', tab==='password');
+    document.getElementById('panel-otp').classList.toggle('active', tab==='otp');
+  }
+
+  function togglePw(id, icon) {
+    const f = document.getElementById(id);
+    f.type = f.type==='password'?'text':'password';
+    icon.classList.toggle('fa-eye'); icon.classList.toggle('fa-eye-slash');
+  }
+
+  async function handlePasswordLogin(e) {
+    e.preventDefault();
+    const btn = document.getElementById('loginBtn');
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in…'; btn.disabled = true;
+    try {
+      const res = await EbevonAPI.Auth.login({
+        identifier: document.getElementById('loginId').value.trim(),
+        password:   document.getElementById('pwField').value,
+      });
+      if (!res?.success) { showFlash(res?.message || 'Login failed', 'error'); return; }
+      EbevonAPI.Auth.saveSession(res.data);
+      showFlash('Login successful!');
+      setTimeout(() => window.location.href = res.data.user.role === 'seller' ? 'dashboard-seller.html' : 'dashboard-buyer.html', 800);
+    } finally { btn.innerHTML='Log In <i class="fas fa-arrow-right"></i>'; btn.disabled=false; }
+  }
+
+  // Build OTP input boxes
+  const otpBoxesEl = document.getElementById('otpBoxes');
+  for (let i=0;i<6;i++) {
+    const inp = document.createElement('input');
+    inp.type='text'; inp.maxLength=1; inp.className='otp-input'; inp.inputMode='numeric';
+    inp.addEventListener('input', e => { if(e.target.value) e.target.nextSibling?.focus(); });
+    inp.addEventListener('keydown', e => { if(e.key==='Backspace'&&!e.target.value) e.target.previousSibling?.focus(); });
+    otpBoxesEl.appendChild(inp);
+  }
+
+  async function sendLoginOtp() {
+    const target = document.getElementById('otpIdentifier').value.trim();
+    if (!target) { showFlash('Enter your email or phone first','error'); return; }
+    const res = await EbevonAPI.OTP.send(target, 'login');
+    if (!res?.success) { showFlash(res?.message||'Failed to send OTP','error'); return; }
+    document.getElementById('otpTargetLabel').textContent = target;
+    document.getElementById('otpStep1').style.display='none';
+    document.getElementById('otpStep2').style.display='block';
+    showFlash('OTP sent!');
+  }
+
+  async function verifyLoginOtp() {
+    const code = [...document.querySelectorAll('.otp-input')].map(i=>i.value).join('');
+    if (code.length!==6) { showFlash('Enter all 6 digits','error'); return; }
+    const target = document.getElementById('otpIdentifier').value.trim();
+    const res = await EbevonAPI.OTP.verify(target, code, 'login');
+    if (!res?.success) { showFlash(res?.message||'Invalid OTP','error'); return; }
+    EbevonAPI.Auth.saveSession(res.data);
+    showFlash('Verified! Redirecting…');
+    setTimeout(() => window.location.href = res.data.user.role==='seller'?'dashboard-seller.html':'dashboard-buyer.html', 800);
+  }
+
+  async function loginWithPasskey() {
+    const identifier = document.getElementById('otpIdentifier').value.trim();
+    if (!identifier) { showFlash('Enter your email or phone first','error'); return; }
+    try {
+      const { options, userId } = await EbevonAPI.Passkey.startAuthentication(identifier);
+      const authResp = await SimpleWebAuthnBrowser.startAuthentication(options);
+      const res = await EbevonAPI.Passkey.finishAuthentication(userId, authResp);
+      if (!res?.success) { showFlash(res?.message||'Passkey failed','error'); return; }
+      EbevonAPI.Auth.saveSession(res.data);
+      showFlash('Passkey authentication successful!');
+      setTimeout(() => window.location.href = res.data.user.role==='seller'?'dashboard-seller.html':'dashboard-buyer.html', 800);
+    } catch(err) { showFlash(err.message||'Passkey error','error'); }
+  }
+
+  function showForgot() {
+    const id = document.getElementById('loginId').value.trim() || prompt('Enter your email or phone:');
+    if (!id) return;
+    EbevonAPI.Auth.forgotPassword(id).then(res => showFlash(res?.message||'Check your email/phone for a reset code.'));
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seller Dashboard – EBEVON</title>
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    .dash-page { padding-top: 72px; min-height: 100vh; background: var(--dark); }
+    .dash-layout { display: grid; grid-template-columns: 260px 1fr; min-height: calc(100vh - 72px); }
+    .dash-sidebar { background: var(--dark-2); border-right: 1px solid var(--border); padding: 32px 0; position: sticky; top: 72px; height: calc(100vh - 72px); overflow-y: auto; }
+    .dash-user { padding: 0 24px 24px; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+    .dash-avatar { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg,var(--gold),var(--gold-light)); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; color: #000; margin-bottom: 12px; }
+    .dash-name { font-weight: 700; color: var(--text); font-size: 0.95rem; }
+    .dash-role { font-size: 0.75rem; color: var(--gold); display: flex; align-items: center; gap: 5px; margin-top: 3px; }
+    .verified-badge-sm { background: rgba(34,197,94,0.15); color: var(--success); border: 1px solid rgba(34,197,94,0.3); border-radius: 50px; padding: 2px 8px; font-size: 0.7rem; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; margin-top: 6px; }
+    .nav-menu { padding: 0 12px; }
+    .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: var(--radius); color: var(--text-muted); font-size: 0.88rem; font-weight: 500; cursor: pointer; transition: var(--transition); margin-bottom: 4px; }
+    .nav-item i { width: 18px; font-size: 0.95rem; }
+    .nav-item:hover, .nav-item.active { background: rgba(201,168,76,0.08); color: var(--gold); }
+    .nav-section-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; padding: 16px 16px 6px; font-weight: 600; }
+
+    .dash-main { padding: 40px; overflow-y: auto; }
+    .dash-header { margin-bottom: 36px; }
+    .dash-header h1 { font-size: 1.5rem; color: var(--text); margin-bottom: 4px; }
+    .dash-header p { color: var(--text-muted); font-size: 0.88rem; }
+
+    .stats-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 20px; margin-bottom: 40px; }
+    .stat-card { background: var(--dark-3); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; }
+    .stat-card .s-icon { font-size: 1.4rem; margin-bottom: 12px; }
+    .stat-card .s-val { font-family: var(--font-head); font-size: 1.8rem; font-weight: 900; color: var(--text); }
+    .stat-card .s-label { font-size: 0.8rem; color: var(--text-muted); margin-top: 4px; }
+    .stat-card .s-change { font-size: 0.75rem; margin-top: 6px; }
+    .up { color: var(--success); } .down { color: var(--danger); }
+
+    .section-card { background: var(--dark-3); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px; margin-bottom: 28px; }
+    .section-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+    .section-card-header h3 { font-size: 1rem; color: var(--text); }
+
+    .listing-row { display: grid; grid-template-columns: 80px 1fr auto; gap: 16px; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--border); }
+    .listing-row:last-child { border-bottom: none; }
+    .listing-row img { width: 80px; height: 60px; object-fit: cover; border-radius: 8px; }
+    .listing-title { font-weight: 600; color: var(--text); font-size: 0.9rem; margin-bottom: 4px; }
+    .listing-meta { font-size: 0.78rem; color: var(--text-muted); display: flex; gap: 12px; flex-wrap: wrap; }
+    .status-badge { padding: 3px 10px; border-radius: 50px; font-size: 0.72rem; font-weight: 700; }
+    .status-live    { background: rgba(34,197,94,0.15); color: var(--success); }
+    .status-pending { background: rgba(245,158,11,0.15); color: var(--warning); }
+    .status-sold    { background: rgba(59,130,246,0.15); color: var(--info); }
+    .status-escrow  { background: rgba(201,168,76,0.15); color: var(--gold); }
+    .row-actions { display: flex; gap: 8px; }
+    .icon-btn { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border); background: var(--dark-4); color: var(--text-muted); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; cursor: pointer; transition: var(--transition); }
+    .icon-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+    .escrow-card { background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(201,168,76,0.04)); border: 1px solid var(--border-gold); border-radius: var(--radius-lg); padding: 28px; margin-bottom: 28px; }
+    .escrow-card h3 { color: var(--gold); margin-bottom: 16px; font-size: 1rem; }
+    .escrow-item { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .escrow-item:last-child { border-bottom: none; }
+    .escrow-amount { font-family: var(--font-head); font-size: 1.1rem; color: var(--gold); font-weight: 700; }
+    .escrow-pending { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
+
+    @media (max-width: 900px) { .dash-layout { grid-template-columns: 1fr; } .dash-sidebar { position: static; height: auto; } .stats-row { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 560px) { .stats-row { grid-template-columns: 1fr; } .dash-main { padding: 20px; } }
+  </style>
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="../index.html" class="nav-logo">
+      <img src="../assets/images/logo.jpg" alt="EBEVON" class="logo-img" />
+      <span class="logo-text">EBEVON</span>
+    </a>
+    <div class="nav-actions" style="margin-left:auto;gap:16px">
+      <a href="sell.html" class="btn-gold"><i class="fas fa-plus"></i> Add Listing</a>
+      <a href="login.html" class="btn-ghost"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+  </div>
+</nav>
+
+<div class="dash-page">
+  <div class="dash-layout">
+    <!-- SIDEBAR -->
+    <aside class="dash-sidebar">
+      <div class="dash-user">
+        <div class="dash-avatar"><i class="fas fa-user"></i></div>
+        <div class="dash-name">Emeka Johnson</div>
+        <div class="dash-role"><i class="fas fa-store"></i> Seller Account</div>
+        <div class="verified-badge-sm"><i class="fas fa-shield-check"></i> Verified Seller</div>
+      </div>
+      <div class="nav-menu">
+        <div class="nav-section-label">Main</div>
+        <div class="nav-item active"><i class="fas fa-chart-line"></i> Overview</div>
+        <div class="nav-item" onclick="window.location='sell.html'"><i class="fas fa-plus-circle"></i> Add New Listing</div>
+        <div class="nav-item"><i class="fas fa-car"></i> My Listings</div>
+        <div class="nav-item"><i class="fas fa-eye"></i> Views & Inquiries</div>
+        <div class="nav-section-label">Transactions</div>
+        <div class="nav-item"><i class="fas fa-lock"></i> Escrow Payments</div>
+        <div class="nav-item"><i class="fas fa-money-bill-transfer"></i> Payouts</div>
+        <div class="nav-section-label">Account</div>
+        <div class="nav-item" onclick="window.location='verify.html'"><i class="fas fa-shield-check"></i> Verification</div>
+        <div class="nav-item"><i class="fas fa-bell"></i> Notifications <span style="margin-left:auto;background:var(--gold);color:#000;font-size:0.7rem;font-weight:700;padding:2px 7px;border-radius:50px">3</span></div>
+        <div class="nav-item"><i class="fas fa-cog"></i> Settings</div>
+        <div class="nav-section-label">Help</div>
+        <div class="nav-item" onclick="window.location='support.html'"><i class="fas fa-headset"></i> Support</div>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="dash-main">
+      <div class="dash-header">
+        <h1>Welcome back, Emeka 👋</h1>
+        <p>Here's how your listings are performing today.</p>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="s-icon" style="color:var(--gold)"><i class="fas fa-car"></i></div>
+          <div class="s-val">7</div>
+          <div class="s-label">Active Listings</div>
+          <div class="s-change up"><i class="fas fa-arrow-up"></i> 2 this month</div>
+        </div>
+        <div class="stat-card">
+          <div class="s-icon" style="color:var(--success)"><i class="fas fa-handshake"></i></div>
+          <div class="s-val">3</div>
+          <div class="s-label">Cars Sold</div>
+          <div class="s-change up"><i class="fas fa-arrow-up"></i> +1 this week</div>
+        </div>
+        <div class="stat-card">
+          <div class="s-icon" style="color:var(--info)"><i class="fas fa-eye"></i></div>
+          <div class="s-val">2,841</div>
+          <div class="s-label">Total Views</div>
+          <div class="s-change up"><i class="fas fa-arrow-up"></i> 14% this week</div>
+        </div>
+        <div class="stat-card">
+          <div class="s-icon" style="color:var(--gold)"><i class="fas fa-lock"></i></div>
+          <div class="s-val">₦45M</div>
+          <div class="s-label">In Escrow</div>
+          <div class="s-change" style="color:var(--text-muted)">Pending buyer confirmation</div>
+        </div>
+      </div>
+
+      <!-- Escrow -->
+      <div class="escrow-card">
+        <h3><i class="fas fa-lock" style="margin-right:8px"></i>Escrow Status</h3>
+        <div class="escrow-item">
+          <div>
+            <div style="font-weight:600;color:var(--text);font-size:0.9rem">2024 BMW M5 Competition</div>
+            <div class="escrow-pending">Buyer inspecting — awaiting confirmation</div>
+          </div>
+          <div style="text-align:right">
+            <div class="escrow-amount">₦45,000,000</div>
+            <span class="status-badge status-escrow">In Escrow</span>
+          </div>
+        </div>
+        <div class="escrow-item">
+          <div>
+            <div style="font-weight:600;color:var(--text);font-size:0.9rem">2023 Toyota Camry XSE</div>
+            <div class="escrow-pending" style="color:var(--success)"><i class="fas fa-check-circle"></i> Buyer confirmed — payout processing</div>
+          </div>
+          <div style="text-align:right">
+            <div class="escrow-amount" style="color:var(--success)">₦14,500,000</div>
+            <span class="status-badge" style="background:rgba(34,197,94,0.15);color:var(--success)">Releasing</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- My Listings -->
+      <div class="section-card">
+        <div class="section-card-header">
+          <h3><i class="fas fa-car" style="color:var(--gold);margin-right:8px"></i>My Listings</h3>
+          <a href="sell.html" class="btn-gold" style="font-size:0.82rem;padding:8px 16px"><i class="fas fa-plus"></i> Add New</a>
+        </div>
+
+        <div class="listing-row">
+          <img src="https://images.unsplash.com/photo-1555215695-3004980ad54e?w=160&q=70" alt="BMW" />
+          <div>
+            <div class="listing-title">2024 BMW M5 Competition</div>
+            <div class="listing-meta">
+              <span><i class="fas fa-tag"></i> ₦45,000,000</span>
+              <span><i class="fas fa-eye"></i> 847 views</span>
+              <span><i class="fas fa-calendar"></i> Listed 3 days ago</span>
+            </div>
+            <div class="health-mini" style="max-width:240px;margin-top:8px">
+              <div class="health-mini-label"><span>Health</span><span style="color:#22c55e">Excellent (88%)</span></div>
+              <div class="health-mini-bar"><div class="health-mini-fill" style="width:88%;background:#22c55e"></div></div>
+            </div>
+          </div>
+          <div>
+            <div style="margin-bottom:8px"><span class="status-badge status-escrow">In Escrow</span></div>
+            <div class="row-actions">
+              <button class="icon-btn" title="Edit"><i class="fas fa-edit"></i></button>
+              <button class="icon-btn" title="View"><i class="fas fa-eye"></i></button>
+              <button class="icon-btn" title="Delete" style="color:var(--danger)" onclick="showFlash('Listing deleted.','error')"><i class="fas fa-trash"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="listing-row">
+          <img src="https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=160&q=70" alt="Lexus" />
+          <div>
+            <div class="listing-title">2025 Lexus LX 600 Sport</div>
+            <div class="listing-meta">
+              <span><i class="fas fa-tag"></i> ₦78,000,000</span>
+              <span><i class="fas fa-eye"></i> 1,204 views</span>
+              <span><i class="fas fa-calendar"></i> Listed 1 week ago</span>
+            </div>
+            <div class="health-mini" style="max-width:240px;margin-top:8px">
+              <div class="health-mini-label"><span>Health</span><span style="color:#22c55e">Brand New (100%)</span></div>
+              <div class="health-mini-bar"><div class="health-mini-fill" style="width:100%;background:#22c55e"></div></div>
+            </div>
+          </div>
+          <div>
+            <div style="margin-bottom:8px"><span class="status-badge status-live">Live</span></div>
+            <div class="row-actions">
+              <button class="icon-btn"><i class="fas fa-edit"></i></button>
+              <button class="icon-btn"><i class="fas fa-eye"></i></button>
+              <button class="icon-btn" style="color:var(--danger)" onclick="showFlash('Listing deleted.','error')"><i class="fas fa-trash"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="listing-row">
+          <img src="https://images.unsplash.com/photo-1580274455191-1c62238fa333?w=160&q=70" alt="Toyota" />
+          <div>
+            <div class="listing-title">2023 Toyota Land Cruiser GXR</div>
+            <div class="listing-meta">
+              <span><i class="fas fa-tag"></i> ₦52,000,000</span>
+              <span><i class="fas fa-eye"></i> 563 views</span>
+              <span><i class="fas fa-calendar"></i> Listed 2 weeks ago</span>
+            </div>
+            <div class="health-mini" style="max-width:240px;margin-top:8px">
+              <div class="health-mini-label"><span>Health</span><span style="color:#22c55e">Excellent (91%)</span></div>
+              <div class="health-mini-bar"><div class="health-mini-fill" style="width:91%;background:#22c55e"></div></div>
+            </div>
+          </div>
+          <div>
+            <div style="margin-bottom:8px"><span class="status-badge status-pending">Under Review</span></div>
+            <div class="row-actions">
+              <button class="icon-btn"><i class="fas fa-edit"></i></button>
+              <button class="icon-btn"><i class="fas fa-eye"></i></button>
+              <button class="icon-btn" style="color:var(--danger)" onclick="showFlash('Listing deleted.','error')"><i class="fas fa-trash"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<a href="https://wa.me/2348132782330" class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

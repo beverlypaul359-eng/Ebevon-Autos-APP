@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Car Detail – EBEVON</title>
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    .detail-page { padding-top: 72px; }
+    .detail-body { display: grid; grid-template-columns: 1fr 380px; gap: 40px; padding: 48px 0 80px; }
+
+    /* Gallery */
+    .gallery-main { border-radius: var(--radius-lg); overflow: hidden; aspect-ratio: 16/9; background: var(--dark-3); margin-bottom: 12px; }
+    .gallery-main img { width: 100%; height: 100%; object-fit: cover; }
+    .gallery-thumbs { display: grid; grid-template-columns: repeat(5,1fr); gap: 8px; }
+    .gallery-thumb { border-radius: 8px; overflow: hidden; aspect-ratio: 4/3; cursor: pointer; border: 2px solid transparent; transition: var(--transition); }
+    .gallery-thumb.active, .gallery-thumb:hover { border-color: var(--gold); }
+    .gallery-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* Angle guide */
+    .angle-guide { background: var(--dark-3); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; margin-top: 24px; }
+    .angle-guide h4 { font-size: 0.85rem; color: var(--gold); margin-bottom: 14px; text-transform: uppercase; letter-spacing: 1px; }
+    .angle-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .angle-item { text-align: center; }
+    .angle-item img { width: 100%; border-radius: 8px; margin-bottom: 4px; border: 1px solid var(--border); }
+    .angle-item span { font-size: 0.7rem; color: var(--text-muted); }
+
+    /* Videos */
+    .video-tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+    .vtab { padding: 8px 16px; border-radius: 50px; border: 1px solid var(--border); background: var(--dark-4); color: var(--text-muted); font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: var(--transition); }
+    .vtab.active { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,0.08); }
+    .video-panel { display: none; }
+    .video-panel.active { display: block; }
+    .video-placeholder { background: var(--dark-4); border: 2px dashed var(--border); border-radius: var(--radius-lg); aspect-ratio: 16/9; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; }
+    .video-placeholder i { font-size: 2.4rem; color: var(--gold); }
+    .video-placeholder p { color: var(--text-muted); font-size: 0.88rem; }
+
+    /* Health bar */
+    .health-bar-full { margin: 20px 0; }
+    .health-bar-track { height: 12px; background: var(--dark-5); border-radius: 99px; overflow: hidden; }
+    .health-bar-fill { height: 100%; border-radius: 99px; transition: width 1.2s ease; }
+    .health-bar-labels { display: flex; justify-content: space-between; margin-top: 6px; font-size: 0.78rem; }
+
+    /* Sidebar sticky card */
+    .detail-sidebar { position: sticky; top: 88px; height: fit-content; display: flex; flex-direction: column; gap: 20px; }
+    .price-card { background: var(--dark-3); border: 1px solid var(--border-gold); border-radius: var(--radius-lg); padding: 28px; }
+    .price-card .price-main { font-family: var(--font-head); font-size: 2rem; color: var(--gold); font-weight: 900; margin-bottom: 4px; }
+    .price-card .price-tag { font-size: 0.8rem; color: var(--success); margin-bottom: 20px; }
+    .price-card .price-tag i { margin-right: 4px; }
+    .buy-btn { width: 100%; padding: 15px; font-size: 1rem; justify-content: center; margin-bottom: 12px; }
+    .chat-btn { width: 100%; padding: 14px; justify-content: center; background: rgba(37,211,102,0.1); border: 1px solid rgba(37,211,102,0.4); color: #25d366; border-radius: var(--radius); font-weight: 600; font-size: 0.9rem; transition: var(--transition); display: flex; align-items: center; gap: 8px; }
+    .chat-btn:hover { background: #25d366; color: #fff; }
+    .delivery-btn { width: 100%; padding: 12px; justify-content: center; font-size: 0.88rem; margin-top: 8px; }
+
+    .spec-card { background: var(--dark-3); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; }
+    .spec-card h4 { font-size: 0.82rem; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
+    .spec-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); }
+    .spec-row:last-child { border-bottom: none; }
+    .spec-row .spec-label { font-size: 0.82rem; color: var(--text-muted); }
+    .spec-row .spec-val { font-size: 0.88rem; color: var(--text); font-weight: 600; }
+
+    .escrow-note { background: rgba(201,168,76,0.07); border: 1px solid var(--border-gold); border-radius: var(--radius); padding: 16px; }
+    .escrow-note p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.6; }
+    .escrow-note strong { color: var(--gold); }
+
+    .seller-card { background: var(--dark-3); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; }
+    .seller-info { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+    .seller-avatar { width: 52px; height: 52px; border-radius: 50%; background: var(--dark-4); border: 2px solid var(--border-gold); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; color: var(--gold); }
+    .seller-name { font-weight: 700; color: var(--text); font-size: 0.95rem; }
+    .seller-meta { font-size: 0.8rem; color: var(--text-muted); }
+    .verified-badge { display: inline-flex; align-items: center; gap: 5px; background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.4); color: var(--success); font-size: 0.75rem; font-weight: 600; padding: 3px 10px; border-radius: 50px; margin-top: 4px; }
+
+    @media (max-width: 960px) { .detail-body { grid-template-columns: 1fr; } .detail-sidebar { position: static; } }
+    @media (max-width: 560px) { .gallery-thumbs { grid-template-columns: repeat(4,1fr); } .angle-grid { grid-template-columns: repeat(2,1fr); } }
+  </style>
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="../index.html" class="nav-logo">
+      <img src="../assets/images/logo.jpg" alt="EBEVON" class="logo-img" />
+      <span class="logo-text">EBEVON</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="listings.html">Browse Cars</a></li>
+      <li><a href="sell.html">Sell a Car</a></li>
+      <li><a href="support.html">Support</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="login.html" class="btn-ghost">Log In</a>
+      <a href="signup.html" class="btn-gold">Sign Up</a>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<div class="detail-page">
+  <div class="container">
+    <div class="breadcrumb" style="padding-top:24px">
+      <a href="../index.html">Home</a><i class="fas fa-chevron-right"></i>
+      <a href="listings.html">Browse Cars</a><i class="fas fa-chevron-right"></i>
+      <span id="breadName">Car Detail</span>
+    </div>
+
+    <div class="detail-body">
+      <!-- LEFT: GALLERY + INFO -->
+      <div class="detail-left">
+        <div class="gallery-main"><img id="mainImg" src="" alt="Car" /></div>
+        <div class="gallery-thumbs" id="thumbsRow"></div>
+
+        <!-- Angle Guide -->
+        <div class="angle-guide">
+          <h4><i class="fas fa-camera-rotate" style="margin-right:6px"></i>Required Photo Angles</h4>
+          <div class="angle-grid">
+            <div class="angle-item">
+              <img src="https://images.unsplash.com/photo-1555215695-3004980ad54e?w=200&h=140&fit=crop&q=60" alt="Front"/>
+              <span>Front View</span>
+            </div>
+            <div class="angle-item">
+              <img src="https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?w=200&h=140&fit=crop&q=60" alt="Rear"/>
+              <span>Rear View</span>
+            </div>
+            <div class="angle-item">
+              <img src="https://images.unsplash.com/photo-1580274455191-1c62238fa333?w=200&h=140&fit=crop&q=60" alt="Driver Side"/>
+              <span>Driver Side</span>
+            </div>
+            <div class="angle-item">
+              <img src="https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=200&h=140&fit=crop&q=60" alt="Passenger Side"/>
+              <span>Passenger Side</span>
+            </div>
+            <div class="angle-item">
+              <img src="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?w=200&h=140&fit=crop&q=60" alt="Dashboard"/>
+              <span>Dashboard</span>
+            </div>
+            <div class="angle-item">
+              <img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=200&h=140&fit=crop&q=60" alt="Engine Bay"/>
+              <span>Engine Bay</span>
+            </div>
+            <div class="angle-item">
+              <img src="https://images.unsplash.com/photo-1580274455191-1c62238fa333?w=200&h=140&fit=crop&q=60" alt="Boot/Trunk"/>
+              <span>Boot / Trunk</span>
+            </div>
+            <div class="angle-item">
+              <img src="https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?w=200&h=140&fit=crop&q=60" alt="Interior"/>
+              <span>Interior</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Videos Section -->
+        <div style="margin-top:32px">
+          <h3 style="color:var(--text);margin-bottom:16px"><i class="fas fa-video" style="color:var(--gold);margin-right:8px"></i>Vehicle Videos</h3>
+          <div class="video-tabs">
+            <button class="vtab active" onclick="showVideo('exterior',this)"><i class="fas fa-car"></i> Exterior Walk-around</button>
+            <button class="vtab" onclick="showVideo('interior',this)"><i class="fas fa-couch"></i> Interior Tour</button>
+            <button class="vtab" onclick="showVideo('startup',this)"><i class="fas fa-key"></i> Engine Start-up</button>
+          </div>
+          <div id="video-exterior" class="video-panel active">
+            <div class="video-placeholder"><i class="fas fa-film"></i><p>Exterior walk-around video</p><p style="font-size:0.78rem;color:var(--border)">Seller uploads a full 360° exterior video</p></div>
+          </div>
+          <div id="video-interior" class="video-panel">
+            <div class="video-placeholder"><i class="fas fa-couch"></i><p>Interior tour video</p><p style="font-size:0.78rem;color:var(--border)">Full cabin, seats, dashboard, and infotainment</p></div>
+          </div>
+          <div id="video-startup" class="video-panel">
+            <div class="video-placeholder"><i class="fas fa-gauge-high"></i><p>Engine start-up & dashboard video</p><p style="font-size:0.78rem;color:var(--border)">Vehicle running, showing all dashboard readings</p></div>
+          </div>
+        </div>
+
+        <!-- Vehicle Health Bar -->
+        <div style="background:var(--dark-3);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px;margin-top:32px">
+          <h3 style="color:var(--text);margin-bottom:6px"><i class="fas fa-heart-pulse" style="color:var(--gold);margin-right:8px"></i>Vehicle Health Score</h3>
+          <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:20px">Declared by seller. Only Brand New cars have a full 100% bar.</p>
+          <div class="health-bar-full">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+              <span id="healthLabel" style="font-size:1.1rem;font-weight:700;color:var(--text)">Loading…</span>
+              <span id="healthPct" style="font-family:var(--font-head);font-size:1.4rem;font-weight:900;color:var(--gold)">—</span>
+            </div>
+            <div class="health-bar-track">
+              <div class="health-bar-fill" id="healthFill" style="width:0%"></div>
+            </div>
+            <div class="health-bar-labels">
+              <span style="color:var(--danger)">Critical</span>
+              <span style="color:var(--warning)">Fair</span>
+              <span style="color:#84cc16">Good</span>
+              <span style="color:var(--success)">Excellent</span>
+              <span style="color:#22c55e;font-weight:700">Brand New</span>
+            </div>
+          </div>
+          <div id="healthBreakdown" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px"></div>
+        </div>
+
+        <!-- Description -->
+        <div style="background:var(--dark-3);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px;margin-top:24px">
+          <h3 style="color:var(--text);margin-bottom:14px"><i class="fas fa-file-lines" style="color:var(--gold);margin-right:8px"></i>Description</h3>
+          <p id="carDesc" style="color:var(--text-muted);font-size:0.9rem;line-height:1.8"></p>
+        </div>
+      </div>
+
+      <!-- RIGHT: SIDEBAR -->
+      <div class="detail-sidebar">
+        <div class="price-card">
+          <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:4px" id="carTitle2">Loading…</div>
+          <div class="price-main" id="sidePrice">₦—</div>
+          <div class="price-tag"><i class="fas fa-shield-check"></i> Escrow Protected — Pay only after inspection</div>
+          <a href="signup.html?role=buyer" class="btn-gold buy-btn"><i class="fas fa-lock"></i> Buy with Escrow</a>
+          <a href="https://wa.me/2348132782330" target="_blank" class="chat-btn"><i class="fab fa-whatsapp"></i> Chat on WhatsApp</a>
+          <button class="btn-outline delivery-btn" onclick="document.getElementById('deliveryModal').style.display='flex'"><i class="fas fa-truck"></i> Request Delivery</button>
+        </div>
+
+        <div class="escrow-note">
+          <p><strong><i class="fas fa-lock"></i> How Escrow Works:</strong> Your payment is held securely until you physically inspect and confirm the vehicle. Only then is the seller paid. <a href="how-it-works.html" style="color:var(--gold)">Learn more</a></p>
+        </div>
+
+        <div class="spec-card">
+          <h4><i class="fas fa-list-check" style="margin-right:6px"></i>Specifications</h4>
+          <div id="specList"></div>
+        </div>
+
+        <div class="seller-card">
+          <h4 style="font-size:0.82rem;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:16px"><i class="fas fa-user-circle" style="margin-right:6px"></i>Seller Info</h4>
+          <div class="seller-info">
+            <div class="seller-avatar"><i class="fas fa-store"></i></div>
+            <div>
+              <div class="seller-name" id="sellerName">Loading…</div>
+              <div class="seller-meta" id="sellerLocation"><i class="fas fa-map-marker-alt"></i> —</div>
+              <div class="verified-badge"><i class="fas fa-shield-check"></i> Verified Seller</div>
+            </div>
+          </div>
+          <a href="support.html" class="btn-ghost" style="width:100%;justify-content:center;font-size:0.85rem"><i class="fas fa-flag"></i> Report Listing</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DELIVERY MODAL -->
+<div id="deliveryModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:2000;align-items:center;justify-content:center;padding:24px">
+  <div style="background:var(--dark-3);border:1px solid var(--border-gold);border-radius:var(--radius-lg);padding:40px;max-width:480px;width:100%;position:relative">
+    <button onclick="document.getElementById('deliveryModal').style.display='none'" style="position:absolute;top:16px;right:16px;color:var(--text-muted);font-size:1.2rem"><i class="fas fa-times"></i></button>
+    <h3 style="color:var(--text);margin-bottom:8px"><i class="fas fa-truck" style="color:var(--gold);margin-right:8px"></i>Request Delivery</h3>
+    <p style="color:var(--text-muted);font-size:0.88rem;margin-bottom:24px">Fill in your details and we'll arrange delivery to your location.</p>
+    <div class="form-group"><label>Full Name</label><input type="text" class="form-control" placeholder="Your full name" /></div>
+    <div class="form-group"><label>Phone Number</label><input type="tel" class="form-control" placeholder="08100000000" /></div>
+    <div class="form-group"><label>Delivery Address</label><textarea class="form-control" rows="3" placeholder="Full address including city and state"></textarea></div>
+    <div class="form-group"><label>Preferred Date</label><input type="date" class="form-control" /></div>
+    <div style="background:rgba(201,168,76,0.08);border:1px solid var(--border-gold);border-radius:8px;padding:12px;margin-bottom:20px">
+      <p style="font-size:0.8rem;color:var(--text-muted)"><i class="fas fa-info-circle" style="color:var(--gold)"></i> Delivery fee is calculated based on your location. Payment via escrow is required before delivery dispatch.</p>
+    </div>
+    <button class="btn-gold" style="width:100%;justify-content:center;padding:14px" onclick="document.getElementById('deliveryModal').style.display='none';showFlash('Delivery request submitted! We will contact you shortly.')"><i class="fas fa-paper-plane"></i> Submit Request</button>
+  </div>
+</div>
+
+<a href="https://wa.me/2348132782330" class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+<script src="../assets/js/main.js"></script>
+<script src="../assets/js/car-detail.js"></script>
+</body>
+</html>

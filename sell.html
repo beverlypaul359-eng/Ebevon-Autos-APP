@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>List Your Car – EBEVON</title>
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    .sell-page { padding-top: 72px; min-height: 100vh; background: var(--dark); }
+    .sell-hero { background: linear-gradient(135deg, var(--dark-2), var(--dark-3)); padding: 60px 0; border-bottom: 1px solid var(--border); text-align: center; }
+    .sell-hero h1 { color: var(--text); margin-bottom: 10px; }
+    .sell-hero p { color: var(--text-muted); max-width: 560px; margin: 0 auto; }
+    .sell-steps { display: flex; justify-content: center; gap: 0; margin-top: 40px; flex-wrap: wrap; }
+    .sell-step { display: flex; align-items: center; gap: 10px; padding: 8px 20px; }
+    .sell-step-num { width: 30px; height: 30px; border-radius: 50%; background: var(--gold); color: #000; font-weight: 700; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .sell-step span { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; }
+    .sell-step-divider { width: 40px; height: 1px; background: var(--border); align-self: center; }
+
+    .sell-form-wrap { max-width: 820px; margin: 0 auto; padding: 60px 24px 80px; }
+    .form-section { background: var(--dark-3); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 36px; margin-bottom: 24px; }
+    .form-section-title { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; }
+    .form-section-title i { font-size: 1.3rem; color: var(--gold); }
+    .form-section-title h3 { font-size: 1.05rem; color: var(--text); }
+    .form-section-title span { margin-left: auto; font-size: 0.78rem; color: var(--text-muted); }
+    .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .form-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; }
+
+    /* Image upload grid */
+    .photo-guide { background: var(--dark-4); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 20px; }
+    .photo-guide-title { font-size: 0.82rem; color: var(--gold); font-weight: 600; margin-bottom: 8px; }
+    .photo-guide-list { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
+    .guide-angle { text-align: center; }
+    .guide-angle-icon { width: 52px; height: 52px; background: var(--dark-5); border: 2px dashed var(--border); border-radius: 8px; margin: 0 auto 4px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: var(--text-muted); }
+    .guide-angle span { font-size: 0.68rem; color: var(--text-muted); }
+
+    .upload-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 16px; }
+    .upload-slot { aspect-ratio: 4/3; border: 2px dashed var(--border); border-radius: var(--radius); background: var(--dark-4); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; position: relative; overflow: hidden; transition: var(--transition); }
+    .upload-slot:hover { border-color: var(--gold); background: rgba(201,168,76,0.04); }
+    .upload-slot i { font-size: 1.4rem; color: var(--text-muted); margin-bottom: 4px; }
+    .upload-slot span { font-size: 0.68rem; color: var(--text-muted); }
+    .upload-slot input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+    .upload-slot .preview-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: none; }
+    .upload-slot.filled .preview-img { display: block; }
+    .upload-slot.filled .upload-icon { display: none; }
+
+    /* Video upload */
+    .video-upload-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+    .video-slot { border: 2px dashed var(--border); border-radius: var(--radius-lg); padding: 24px 12px; text-align: center; cursor: pointer; background: var(--dark-4); transition: var(--transition); position: relative; overflow: hidden; }
+    .video-slot:hover { border-color: var(--gold); }
+    .video-slot i { font-size: 1.8rem; color: var(--gold); margin-bottom: 8px; display: block; }
+    .video-slot p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.4; }
+    .video-slot small { font-size: 0.72rem; color: var(--border); }
+    .video-slot input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+    .video-slot.uploaded { border-color: var(--success); }
+    .video-slot.uploaded i { color: var(--success); }
+
+    /* Health selector */
+    .health-selector { margin: 10px 0; }
+    .health-selector-track { position: relative; margin-bottom: 8px; }
+    .health-selector-track input[type=range] { width: 100%; accent-color: var(--gold); }
+    .health-display { display: flex; justify-content: space-between; align-items: center; }
+    .health-display .h-score { font-family: var(--font-head); font-size: 1.6rem; font-weight: 900; }
+    .health-display .h-label { font-size: 0.9rem; font-weight: 600; }
+    .health-bar-track { height: 14px; background: var(--dark-5); border-radius: 99px; overflow: hidden; margin: 10px 0; }
+    .health-bar-fill { height: 100%; border-radius: 99px; transition: width 0.4s ease, background 0.4s ease; }
+    .health-hint { font-size: 0.78rem; color: var(--text-muted); }
+
+    .submit-row { display: flex; justify-content: flex-end; gap: 14px; }
+
+    @media (max-width: 768px) {
+      .form-grid-2, .form-grid-3 { grid-template-columns: 1fr; }
+      .upload-grid { grid-template-columns: repeat(2,1fr); }
+      .video-upload-row { grid-template-columns: 1fr; }
+      .photo-guide-list { grid-template-columns: repeat(4,1fr); }
+    }
+  </style>
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="../index.html" class="nav-logo">
+      <img src="../assets/images/logo.jpg" alt="EBEVON" class="logo-img" />
+      <span class="logo-text">EBEVON</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="listings.html">Browse Cars</a></li>
+      <li><a href="sell.html" class="active">Sell a Car</a></li>
+      <li><a href="support.html">Support</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="login.html" class="btn-ghost">Log In</a>
+      <a href="signup.html?role=seller" class="btn-gold">Sign Up</a>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<div class="sell-page">
+  <div class="sell-hero">
+    <div class="container">
+      <h1>List Your Car for Sale</h1>
+      <p>Reach thousands of verified buyers. Get paid securely with our escrow system.</p>
+      <div class="sell-steps">
+        <div class="sell-step"><div class="sell-step-num">1</div><span>Sign Up &amp; Verify</span></div>
+        <div class="sell-step-divider"></div>
+        <div class="sell-step"><div class="sell-step-num">2</div><span>Fill Car Details</span></div>
+        <div class="sell-step-divider"></div>
+        <div class="sell-step"><div class="sell-step-num">3</div><span>Upload Photos &amp; Videos</span></div>
+        <div class="sell-step-divider"></div>
+        <div class="sell-step"><div class="sell-step-num">4</div><span>Set Price &amp; Publish</span></div>
+        <div class="sell-step-divider"></div>
+        <div class="sell-step"><div class="sell-step-num">5</div><span>Get Paid via Escrow</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sell-form-wrap">
+    <div style="background:rgba(201,168,76,0.08);border:1px solid var(--border-gold);border-radius:var(--radius);padding:16px;margin-bottom:28px">
+      <p style="font-size:0.88rem;color:var(--text-muted)"><i class="fas fa-shield-check" style="color:var(--gold)"></i> <strong style="color:var(--text)">Seller Verification Required.</strong> You must complete ID &amp; face verification before your listing goes live. <a href="verify.html" style="color:var(--gold)">Verify now →</a></p>
+    </div>
+
+    <form id="sellForm" onsubmit="handleSellSubmit(event)">
+
+      <!-- CAR DETAILS -->
+      <div class="form-section">
+        <div class="form-section-title">
+          <i class="fas fa-car"></i>
+          <h3>Car Details</h3>
+          <span>Step 1 of 4</span>
+        </div>
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label>Brand / Make <span class="req">*</span></label>
+            <select class="form-control" required onchange="updateMakeModel(this)">
+              <option value="">Select Brand</option>
+              <option>BMW</option><option>Mercedes-Benz</option><option>Toyota</option>
+              <option>Honda</option><option>Lexus</option><option>Tesla</option>
+              <option>Porsche</option><option>Audi</option><option>Ford</option>
+              <option>Range Rover</option><option>Lamborghini</option><option>Rolls-Royce</option>
+              <option>Kia</option><option>Hyundai</option><option>Nissan</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Model <span class="req">*</span></label>
+            <input type="text" class="form-control" placeholder="e.g. M5 Competition" required />
+          </div>
+        </div>
+        <div class="form-grid-3">
+          <div class="form-group">
+            <label>Year <span class="req">*</span></label>
+            <select class="form-control" required>
+              <option value="">Year</option>
+              <option>2026</option><option>2025</option><option>2024</option>
+              <option>2023</option><option>2022</option><option>2021</option>
+              <option>2020</option><option>2019</option><option>2018</option>
+              <option>2017</option><option>2016</option><option>2015 &amp; older</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Condition <span class="req">*</span></label>
+            <select class="form-control" id="conditionSelect" required onchange="onConditionChange(this)">
+              <option value="">Select</option>
+              <option>Brand New</option>
+              <option>Foreign Used</option>
+              <option>Nigerian Used</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Body Type</label>
+            <select class="form-control">
+              <option value="">Select</option>
+              <option>Sedan</option><option>SUV</option><option>Coupe</option>
+              <option>Pickup / Truck</option><option>Hatchback</option><option>Convertible</option><option>Van / Bus</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-grid-3">
+          <div class="form-group">
+            <label>Fuel Type <span class="req">*</span></label>
+            <select class="form-control" required>
+              <option value="">Select</option>
+              <option>Petrol</option><option>Diesel</option><option>Hybrid</option><option>Electric</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Transmission</label>
+            <select class="form-control">
+              <option>Automatic</option><option>Manual</option><option>Semi-Automatic</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Colour</label>
+            <input type="text" class="form-control" placeholder="e.g. Midnight Blue" />
+          </div>
+        </div>
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label>Engine Size</label>
+            <input type="text" class="form-control" placeholder="e.g. 3.0L V6 Turbo" />
+          </div>
+          <div class="form-group">
+            <label>Mileage / Kilometres</label>
+            <input type="text" class="form-control" placeholder="e.g. 15,000 km" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Location (State) <span class="req">*</span></label>
+          <select class="form-control" required>
+            <option value="">Select State</option>
+            <option>Lagos</option><option>Abuja (FCT)</option><option>Rivers</option>
+            <option>Kano</option><option>Ogun</option><option>Oyo</option>
+            <option>Delta</option><option>Enugu</option><option>Kaduna</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Description <span class="req">*</span></label>
+          <textarea class="form-control" rows="5" placeholder="Describe the car's condition, history, features, and any extras included…" required></textarea>
+        </div>
+
+        <!-- ── VIN: private verification field ── -->
+        <div style="background:var(--dark-4);border:1px solid var(--border-gold);border-radius:var(--radius-lg);padding:24px;margin-top:8px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+            <div style="width:36px;height:36px;border-radius:50%;background:rgba(201,168,76,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <i class="fas fa-shield-check" style="color:var(--gold);font-size:1rem"></i>
+            </div>
+            <div>
+              <div style="font-weight:700;color:var(--text);font-size:0.95rem">Vehicle Identification Number (VIN)</div>
+              <div style="font-size:0.78rem;color:var(--text-muted)">Required for verification — private &amp; confidential</div>
+            </div>
+          </div>
+          <div class="form-group" style="margin-bottom:12px">
+            <label>VIN <span class="req">*</span></label>
+            <div style="position:relative">
+              <input
+                type="text"
+                class="form-control"
+                id="vinInput"
+                name="vin"
+                placeholder="e.g. 1HGBH41JXMN109186"
+                maxlength="17"
+                minlength="17"
+                style="text-transform:uppercase;letter-spacing:2px;font-family:var(--font-head);font-size:0.9rem;padding-right:56px"
+                oninput="this.value=this.value.toUpperCase().replace(/[IOQ]/g,'');updateVinCounter(this)"
+                required
+              />
+              <span id="vinCounter" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:0.75rem;color:var(--text-muted);font-family:var(--font-head)">0/17</span>
+            </div>
+          </div>
+          <!-- Privacy assurance box -->
+          <div style="background:rgba(10,10,10,0.5);border:1px solid var(--border);border-radius:8px;padding:14px;display:flex;gap:10px;align-items:flex-start">
+            <i class="fas fa-eye-slash" style="color:var(--gold);margin-top:2px;flex-shrink:0"></i>
+            <div>
+              <p style="font-size:0.82rem;color:var(--text);font-weight:600;margin-bottom:4px">Your VIN is strictly private</p>
+              <p style="font-size:0.78rem;color:var(--text-muted);line-height:1.6">
+                This number is used <strong style="color:var(--text)">only to verify</strong> that your car's brand, model, and year are accurate.
+                It is <strong style="color:var(--text)">never shown</strong> to buyers, other sellers, or in any listing.
+                EBEVON does not display, share, or sell your VIN.
+              </p>
+            </div>
+          </div>
+          <!-- VIN location hint -->
+          <div style="margin-top:14px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+            <div style="background:var(--dark-5);border-radius:8px;padding:10px;text-align:center">
+              <i class="fas fa-car-side" style="color:var(--gold);font-size:1.1rem;margin-bottom:4px;display:block"></i>
+              <span style="font-size:0.7rem;color:var(--text-muted)">Driver's door jamb</span>
+            </div>
+            <div style="background:var(--dark-5);border-radius:8px;padding:10px;text-align:center">
+              <i class="fas fa-gauge" style="color:var(--gold);font-size:1.1rem;margin-bottom:4px;display:block"></i>
+              <span style="font-size:0.7rem;color:var(--text-muted)">Dashboard (windshield base)</span>
+            </div>
+            <div style="background:var(--dark-5);border-radius:8px;padding:10px;text-align:center">
+              <i class="fas fa-file-alt" style="color:var(--gold);font-size:1.1rem;margin-bottom:4px;display:block"></i>
+              <span style="font-size:0.7rem;color:var(--text-muted)">Vehicle documents / papers</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HEALTH BAR -->
+      <div class="form-section">
+        <div class="form-section-title">
+          <i class="fas fa-heart-pulse"></i>
+          <h3>Vehicle Health Score</h3>
+          <span>Step 2 of 4</span>
+        </div>
+        <p style="font-size:0.88rem;color:var(--text-muted);margin-bottom:20px">Be honest — buyers trust verified sellers. Only Brand New cars qualify for 100%.</p>
+        <div id="conditionLock" style="display:none;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.3);border-radius:8px;padding:12px;margin-bottom:16px;font-size:0.85rem;color:var(--success)"><i class="fas fa-lock"></i> Brand New — Health score locked at 100%</div>
+        <div class="health-selector">
+          <div class="health-display">
+            <div>
+              <div class="h-score" id="hScore" style="color:var(--success)">100%</div>
+              <div class="h-label" id="hLabel" style="color:var(--success)">Brand New</div>
+            </div>
+            <div style="text-align:right;font-size:0.8rem;color:var(--text-muted)">
+              <div>Drag to set score</div>
+            </div>
+          </div>
+          <div class="health-bar-track"><div class="health-bar-fill" id="hBarFill" style="width:100%;background:var(--success)"></div></div>
+          <input type="range" id="healthSlider" min="10" max="100" step="5" value="100" oninput="updateHealthSlider(this)" />
+          <p class="health-hint"><i class="fas fa-info-circle" style="color:var(--gold)"></i> This score is visible to buyers and helps build trust. Misrepresenting vehicle health may result in account suspension.</p>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px" id="healthSubScores">
+          <div class="form-group"><label>Engine</label><select class="form-control"><option>Excellent</option><option>Good</option><option>Fair</option><option>Poor</option></select></div>
+          <div class="form-group"><label>Transmission</label><select class="form-control"><option>Excellent</option><option>Good</option><option>Fair</option><option>Poor</option></select></div>
+          <div class="form-group"><label>Exterior Body</label><select class="form-control"><option>Excellent</option><option>Good</option><option>Fair</option><option>Poor</option></select></div>
+          <div class="form-group"><label>Interior</label><select class="form-control"><option>Excellent</option><option>Good</option><option>Fair</option><option>Poor</option></select></div>
+          <div class="form-group"><label>Brakes</label><select class="form-control"><option>Excellent</option><option>Good</option><option>Fair</option><option>Poor</option></select></div>
+          <div class="form-group"><label>Tyres</label><select class="form-control"><option>Excellent</option><option>Good</option><option>Fair</option><option>Poor</option></select></div>
+        </div>
+      </div>
+
+      <!-- PHOTOS -->
+      <div class="form-section">
+        <div class="form-section-title">
+          <i class="fas fa-images"></i>
+          <h3>Photos (Min. 8 required)</h3>
+          <span>Step 3 of 4</span>
+        </div>
+        <div class="photo-guide">
+          <div class="photo-guide-title"><i class="fas fa-circle-info" style="margin-right:6px"></i>Required Angles — Upload photos for each view:</div>
+          <div class="photo-guide-list">
+            <div class="guide-angle"><div class="guide-angle-icon"><i class="fas fa-arrow-up"></i></div><span>Front</span></div>
+            <div class="guide-angle"><div class="guide-angle-icon"><i class="fas fa-arrow-down"></i></div><span>Rear</span></div>
+            <div class="guide-angle"><div class="guide-angle-icon"><i class="fas fa-arrow-left"></i></div><span>Driver Side</span></div>
+            <div class="guide-angle"><div class="guide-angle-icon"><i class="fas fa-arrow-right"></i></div><span>Pass. Side</span></div>
+            <div class="guide-angle"><div class="guide-angle-icon"><i class="fas fa-gauge"></i></div><span>Dashboard</span></div>
+            <div class="guide-angle"><div class="guide-angle-icon"><i class="fas fa-cogs"></i></div><span>Engine Bay</span></div>
+            <div class="guide-angle"><div class="guide-angle-icon"><i class="fas fa-box"></i></div><span>Boot/Trunk</span></div>
+            <div class="guide-angle"><div class="guide-angle-icon"><i class="fas fa-couch"></i></div><span>Interior</span></div>
+          </div>
+        </div>
+        <div class="upload-grid" id="photoGrid"></div>
+        <p style="font-size:0.78rem;color:var(--text-muted)"><i class="fas fa-info-circle" style="color:var(--gold)"></i> Upload at least 8 photos covering all required angles. JPG/PNG, max 5MB each.</p>
+      </div>
+
+      <!-- VIDEOS -->
+      <div class="form-section">
+        <div class="form-section-title">
+          <i class="fas fa-video"></i>
+          <h3>Videos (3 required)</h3>
+          <span>Step 3b of 4</span>
+        </div>
+        <div class="video-upload-row">
+          <label class="video-slot" id="vSlot1">
+            <i class="fas fa-car-side"></i>
+            <p><strong>Exterior Walk-around</strong></p>
+            <p>Pan around the full exterior of the vehicle</p>
+            <small>MP4 / MOV — Max 100MB</small>
+            <input type="file" accept="video/*" onchange="markVideoUploaded('vSlot1',this)" />
+          </label>
+          <label class="video-slot" id="vSlot2">
+            <i class="fas fa-couch"></i>
+            <p><strong>Interior Tour</strong></p>
+            <p>Show seats, dashboard, infotainment, boot</p>
+            <small>MP4 / MOV — Max 100MB</small>
+            <input type="file" accept="video/*" onchange="markVideoUploaded('vSlot2',this)" />
+          </label>
+          <label class="video-slot" id="vSlot3">
+            <i class="fas fa-gauge-high"></i>
+            <p><strong>Engine Start-up</strong></p>
+            <p>Start engine, show dashboard live readings</p>
+            <small>MP4 / MOV — Max 100MB</small>
+            <input type="file" accept="video/*" onchange="markVideoUploaded('vSlot3',this)" />
+          </label>
+        </div>
+      </div>
+
+      <!-- PRICE -->
+      <div class="form-section">
+        <div class="form-section-title">
+          <i class="fas fa-tag"></i>
+          <h3>Pricing &amp; Availability</h3>
+          <span>Step 4 of 4</span>
+        </div>
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label>Asking Price (₦) <span class="req">*</span></label>
+            <input type="number" class="form-control" placeholder="e.g. 15000000" required min="100000" />
+          </div>
+          <div class="form-group">
+            <label>Negotiable?</label>
+            <select class="form-control">
+              <option>Yes, I'm open to offers</option>
+              <option>No, fixed price</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Delivery Available?</label>
+          <select class="form-control">
+            <option>Yes — buyer pays delivery fee</option>
+            <option>No — inspection/pick-up only</option>
+            <option>To be discussed with buyer</option>
+          </select>
+        </div>
+        <div style="background:rgba(201,168,76,0.07);border:1px solid var(--border-gold);border-radius:var(--radius);padding:16px;margin-top:8px">
+          <p style="font-size:0.82rem;color:var(--text-muted)"><i class="fas fa-lock" style="color:var(--gold)"></i> <strong style="color:var(--text)">Escrow applies to all sales.</strong> You will only receive payment after the buyer confirms receipt of the vehicle. EBEVON charges a 2% transaction fee.</p>
+        </div>
+      </div>
+
+      <div class="submit-row">
+        <button type="button" class="btn-ghost">Save as Draft</button>
+        <button type="submit" class="btn-gold" style="padding:14px 32px"><i class="fas fa-rocket"></i> Publish Listing</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<a href="https://wa.me/2348132782330" class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+<script src="../assets/js/main.js"></script>
+<script>
+  // Build photo upload slots
+  const angles = ['Front View','Rear View','Driver Side','Passenger Side','Dashboard','Engine Bay','Boot/Trunk','Interior','Extra 1','Extra 2','Extra 3','Extra 4'];
+  const grid = document.getElementById('photoGrid');
+  angles.forEach((label, i) => {
+    grid.innerHTML += `
+      <label class="upload-slot" id="slot${i}">
+        <div class="upload-icon" style="display:flex;flex-direction:column;align-items:center;gap:4px">
+          <i class="fas fa-plus"></i>
+          <span>${label}</span>
+        </div>
+        <img class="preview-img" alt="${label}" />
+        <input type="file" accept="image/*" onchange="previewPhoto(${i},this)" />
+      </label>`;
+  });
+
+  function previewPhoto(i, input) {
+    if (!input.files[0]) return;
+    const slot = document.getElementById('slot' + i);
+    const img  = slot.querySelector('.preview-img');
+    img.src = URL.createObjectURL(input.files[0]);
+    slot.classList.add('filled');
+  }
+
+  function markVideoUploaded(id, input) {
+    if (!input.files[0]) return;
+    const slot = document.getElementById(id);
+    slot.classList.add('uploaded');
+    slot.querySelector('p:last-of-type').textContent = '✓ ' + input.files[0].name;
+  }
+
+  function onConditionChange(sel) {
+    const isNew = sel.value === 'Brand New';
+    document.getElementById('conditionLock').style.display = isNew ? 'block' : 'none';
+    const slider = document.getElementById('healthSlider');
+    slider.disabled = isNew;
+    if (isNew) { slider.value = 100; updateHealthSlider(slider); }
+  }
+
+  function updateHealthSlider(el) {
+    const v = parseInt(el.value);
+    const score = document.getElementById('hScore');
+    const label = document.getElementById('hLabel');
+    const fill  = document.getElementById('hBarFill');
+    const color = getHealthColor(v);
+    score.textContent = v + '%'; score.style.color = color;
+    label.textContent = getHealthLabel(v); label.style.color = color;
+    fill.style.width = v + '%'; fill.style.background = color;
+  }
+
+  function handleSellSubmit(e) {
+    e.preventDefault();
+    showFlash('Listing submitted for review! You will be notified once approved.');
+    setTimeout(() => window.location.href = 'dashboard-seller.html', 2000);
+  }
+</script>
+</body>
+</html>

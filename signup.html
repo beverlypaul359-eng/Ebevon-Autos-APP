@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up – EBEVON</title>
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    .auth-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 100px 24px 60px; background: radial-gradient(ellipse at top, #1a1200 0%, var(--dark) 60%); }
+    .auth-card { background: var(--dark-3); border: 1px solid var(--border-gold); border-radius: var(--radius-lg); padding: 48px 44px; width: 100%; max-width: 520px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+    .auth-logo { text-align: center; margin-bottom: 32px; }
+    .auth-logo img { height: 52px; filter: invert(1) sepia(1) saturate(3) hue-rotate(5deg) brightness(0.95); margin: 0 auto 10px; }
+    .auth-logo h1 { font-size: 1.1rem; color: var(--gold); letter-spacing: 3px; }
+    .auth-title { text-align: center; margin-bottom: 32px; }
+    .auth-title h2 { font-size: 1.5rem; color: var(--text); margin-bottom: 6px; }
+    .auth-title p { color: var(--text-muted); font-size: 0.88rem; }
+    .role-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 28px; }
+    .role-btn { padding: 14px; border-radius: var(--radius); border: 2px solid var(--border); background: var(--dark-4); color: var(--text-muted); font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: var(--transition); text-align: center; }
+    .role-btn i { display: block; font-size: 1.4rem; margin-bottom: 6px; }
+    .role-btn.active { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,0.08); }
+    .divider { display: flex; align-items: center; gap: 12px; margin: 24px 0; color: var(--text-muted); font-size: 0.8rem; }
+    .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .auth-footer { text-align: center; margin-top: 24px; font-size: 0.88rem; color: var(--text-muted); }
+    .auth-footer a { color: var(--gold); font-weight: 600; }
+    .password-wrap { position: relative; }
+    .password-wrap .form-control { padding-right: 48px; }
+    .toggle-pw { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); cursor: pointer; }
+    .terms-check { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 20px; }
+    .terms-check input { margin-top: 3px; accent-color: var(--gold); }
+    .terms-check label { font-size: 0.84rem; color: var(--text-muted); }
+    .terms-check a { color: var(--gold); }
+  </style>
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="../index.html" class="nav-logo">
+      <img src="../assets/images/logo.jpg" alt="EBEVON" class="logo-img" />
+      <span class="logo-text">EBEVON</span>
+    </a>
+    <div class="nav-actions" style="margin-left:auto">
+      <a href="login.html" class="btn-ghost">Log In</a>
+    </div>
+  </div>
+</nav>
+
+<div class="auth-page">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <img src="../assets/images/logo.jpg" alt="EBEVON" class="logo-img" style="height:52px;width:52px" />
+      <h1>EBEVON</h1>
+    </div>
+    <div class="auth-title">
+      <h2>Create Your Account</h2>
+      <p>Join Nigeria's most trusted car marketplace</p>
+    </div>
+
+    <div class="role-toggle">
+      <button class="role-btn active" id="roleBuyer" onclick="setRole('buyer')">
+        <i class="fas fa-key"></i> I'm a Buyer
+      </button>
+      <button class="role-btn" id="roleSeller" onclick="setRole('seller')">
+        <i class="fas fa-store"></i> I'm a Seller
+      </button>
+    </div>
+
+    <form id="signupForm" onsubmit="handleSignup(event)">
+      <input type="hidden" id="roleInput" value="buyer" />
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div class="form-group">
+          <label>First Name <span class="req">*</span></label>
+          <input type="text" class="form-control" placeholder="John" required />
+        </div>
+        <div class="form-group">
+          <label>Last Name <span class="req">*</span></label>
+          <input type="text" class="form-control" placeholder="Doe" required />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Email Address <span class="req">*</span></label>
+        <input type="email" class="form-control" placeholder="you@example.com" required />
+      </div>
+
+      <div class="form-group">
+        <label>Phone Number <span class="req">*</span></label>
+        <input type="tel" class="form-control" placeholder="08100000000" required />
+      </div>
+
+      <div class="form-group">
+        <label>State / Location <span class="req">*</span></label>
+        <select class="form-control" required>
+          <option value="">Select your state</option>
+          <option>Lagos</option><option>Abuja (FCT)</option><option>Rivers</option>
+          <option>Kano</option><option>Ogun</option><option>Oyo</option>
+          <option>Delta</option><option>Enugu</option><option>Kaduna</option>
+          <option>Anambra</option><option>Imo</option><option>Edo</option>
+          <option>Akwa Ibom</option><option>Cross River</option><option>Borno</option>
+          <option>Sokoto</option><option>Kwara</option><option>Osun</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <!-- Dealer section – visible for sellers -->
+      <div id="dealerSection" style="display:none">
+        <div class="divider">Dealership Info (Optional)</div>
+        <div class="form-group">
+          <label>Registered Brand / Dealership Name</label>
+          <input type="text" class="form-control" placeholder="e.g. Lagos Motor Hub" />
+        </div>
+        <div class="form-group">
+          <label>CAC Registration Number (if available)</label>
+          <input type="text" class="form-control" placeholder="RC123456" />
+        </div>
+        <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:20px"><i class="fas fa-info-circle" style="color:var(--gold)"></i> You'll complete ID &amp; face verification after signup before listing cars.</p>
+      </div>
+
+      <div class="form-group">
+        <label>Password <span class="req">*</span></label>
+        <div class="password-wrap">
+          <input type="password" class="form-control" id="pwField" placeholder="Min. 8 characters" required minlength="8" />
+          <i class="fas fa-eye toggle-pw" onclick="togglePw('pwField',this)"></i>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Confirm Password <span class="req">*</span></label>
+        <div class="password-wrap">
+          <input type="password" class="form-control" id="pw2Field" placeholder="Repeat password" required />
+          <i class="fas fa-eye toggle-pw" onclick="togglePw('pw2Field',this)"></i>
+        </div>
+      </div>
+
+      <div class="terms-check">
+        <input type="checkbox" id="terms" required />
+        <label for="terms">I agree to EBEVON's <a href="#">Terms of Service</a>, <a href="#">Privacy Policy</a> and <a href="#">Escrow Policy</a>.</label>
+      </div>
+
+      <button type="submit" class="btn-gold" style="width:100%;justify-content:center;padding:15px;font-size:1rem">
+        Create Account <i class="fas fa-arrow-right"></i>
+      </button>
+    </form>
+
+    <div class="auth-footer">
+      Already have an account? <a href="login.html">Log in</a>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/js/main.js"></script>
+<script src="../assets/js/api.js"></script>
+<script>
+  if (EbevonAPI.Auth.isLoggedIn()) window.location.href = 'dashboard-buyer.html';
+
+  function setRole(role) {
+    document.getElementById('roleInput').value = role;
+    document.getElementById('roleBuyer').classList.toggle('active', role === 'buyer');
+    document.getElementById('roleSeller').classList.toggle('active', role === 'seller');
+    document.getElementById('dealerSection').style.display = role === 'seller' ? 'block' : 'none';
+  }
+  function togglePw(id, icon) {
+    const f = document.getElementById(id);
+    f.type = f.type === 'password' ? 'text' : 'password';
+    icon.classList.toggle('fa-eye'); icon.classList.toggle('fa-eye-slash');
+  }
+  async function handleSignup(e) {
+    e.preventDefault();
+    const p1 = document.getElementById('pwField').value;
+    const p2 = document.getElementById('pw2Field').value;
+    if (p1 !== p2) { showFlash('Passwords do not match.', 'error'); return; }
+    const role  = document.getElementById('roleInput').value;
+    const form  = e.target;
+    const btn   = form.querySelector('[type=submit]');
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating account…'; btn.disabled = true;
+    try {
+      const res = await EbevonAPI.Auth.signup({
+        firstName:      form.querySelector('[placeholder="John"]').value.trim(),
+        lastName:       form.querySelector('[placeholder="Doe"]').value.trim(),
+        email:          form.querySelector('[type=email]')?.value.trim() || undefined,
+        phone:          form.querySelector('[type=tel]')?.value.trim()   || undefined,
+        password:       p1,
+        role,
+        state:          form.querySelectorAll('select')[1]?.value || undefined,
+        dealershipName: form.querySelector('[placeholder*="Motor Hub"]')?.value.trim() || undefined,
+        cacNumber:      form.querySelector('[placeholder*="RC"]')?.value.trim() || undefined,
+      });
+      if (!res?.success) { showFlash(res?.message || 'Signup failed.', 'error'); return; }
+      showFlash('Account created! Check your email/phone for an OTP verification code.');
+      setTimeout(() => {
+        const target = form.querySelector('[type=email]')?.value.trim() || form.querySelector('[type=tel]')?.value.trim();
+        window.location.href = `otp-verify.html?target=${encodeURIComponent(target)}&purpose=signup&next=${role==='seller'?'verify.html':'dashboard-buyer.html'}`;
+      }, 1500);
+    } finally { btn.innerHTML='Create Account <i class="fas fa-arrow-right"></i>'; btn.disabled=false; }
+  }
+  // pre-select from URL
+  const params = new URLSearchParams(location.search);
+  if (params.get('role') === 'seller') setRole('seller');
+</script>
+</body>
+</html>
