@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 220" fill="none">
+  <!-- EBEVON Gear Logo — gold version for dark backgrounds -->
+  <g fill="#c9a84c">
+
+    <!-- Gear teeth (12 rectangular teeth around the ring) -->
+    <rect x="97" y="4"  width="26" height="22" rx="3" transform="rotate(0   110 110)"/>
+    <rect x="97" y="4"  width="26" height="22" rx="3" transform="rotate(30  110 110)"/>
+    <rect x="97" y="4"  width="26" height="22" rx="3" transform="rotate(60  110 110)"/>
+    <rect x="97" y="4"  width="26" height="22" rx="3" transform="rotate(90  110 110)"/>
+    <rect x="97" y="4"  width="26" height="22" rx="3" transform="rotate(120 110 110)"/>
+    <rect x="97" y="4"  width="26" height="22" rx="3" transform="rotate(150 110 110)"/>
+    <rect x="97" y="4"  width="26" height="22" rx="3" transform="rotate(180 110 110)"/>
+    <rect x="97" y="4"  width="26" height="22" rx="3" transform="rotate(210 110 110)"/>
+    <rect x="97" y="4"  width="26" height="22" rx="3" transform="rotate(240 110 110)"/>
+    <rect x="97" y="4"  width="26" height="22" rx="3" transform="rotate(270 110 110)"/>
+    <rect x="97" y="4"  width="26" height="22" rx="3" transform="rotate(300 110 110)"/>
+    <rect x="97" y="4"  width="26" height="22" rx="3" transform="rotate(330 110 110)"/>
+
+    <!-- Outer ring -->
+    <circle cx="110" cy="110" r="82" fill="#c9a84c"/>
+
+    <!-- Inner cut-out (creates ring) -->
+    <circle cx="110" cy="110" r="60" fill="#0a0a0a"/>
+
+    <!-- Speed lines left -->
+    <polygon points="10,100 42,96 42,104 10,108" fill="#c9a84c"/>
+    <polygon points="6,112 42,108 42,116 8,118" fill="#c9a84c"/>
+
+    <!-- Speed lines right -->
+    <polygon points="210,100 178,96 178,104 210,108" fill="#c9a84c"/>
+    <polygon points="214,112 178,108 178,116 212,118" fill="#c9a84c"/>
+
+    <!-- Text band background — cuts through the gear -->
+    <rect x="4"  y="96"  width="212" height="28" rx="0" fill="#0a0a0a"/>
+
+    <!-- Text band gold top/bottom lines -->
+    <rect x="4"  y="94"  width="212" height="3" fill="#c9a84c"/>
+    <rect x="4"  y="123" width="212" height="3" fill="#c9a84c"/>
+
+    <!-- EBEVON text -->
+    <text
+      x="110" y="118"
+      font-family="'Orbitron', 'Arial Black', Impact, sans-serif"
+      font-size="28"
+      font-weight="900"
+      fill="#c9a84c"
+      text-anchor="middle"
+      letter-spacing="4"
+      style="paint-order:stroke; stroke:#0a0a0a; stroke-width:1px;"
+    >EBEVON</text>
+  </g>
+</svg>
