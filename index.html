@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EBEVON – Premium Car Marketplace</title>
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <link rel="stylesheet" href="assets/css/hero.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<!-- ═══════════════════════ NAVBAR ═══════════════════════ -->
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo">
+      <img src="assets/images/logo.jpg" alt="EBEVON Logo" class="logo-img" />
+      <span class="logo-text">EBEVON</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="pages/listings.html">Browse Cars</a></li>
+      <li><a href="pages/sell.html">Sell a Car</a></li>
+      <li><a href="pages/how-it-works.html">How It Works</a></li>
+      <li><a href="pages/support.html">Support</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="pages/login.html" class="btn-ghost">Log In</a>
+      <a href="pages/signup.html" class="btn-gold">Sign Up</a>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════════════ HERO SLIDER ═══════════════════════ -->
+<section class="hero-slider" id="heroSlider">
+  <div class="slide active" style="--bg: url('https://images.unsplash.com/photo-1555215695-3004980ad54e?w=1600&q=80')">
+    <div class="slide-overlay"></div>
+    <div class="slide-content">
+      <span class="slide-badge">Featured Brand</span>
+      <h1 class="slide-title">BMW M Series</h1>
+      <p class="slide-sub">The Ultimate Driving Machine — Find yours today.</p>
+      <a href="pages/listings.html?brand=BMW" class="btn-gold">Explore BMW</a>
+    </div>
+  </div>
+  <div class="slide" style="--bg: url('https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?w=1600&q=80')">
+    <div class="slide-overlay"></div>
+    <div class="slide-content">
+      <span class="slide-badge">Luxury Collection</span>
+      <h1 class="slide-title">Mercedes-Benz</h1>
+      <p class="slide-sub">Redefining luxury — drive the extraordinary.</p>
+      <a href="pages/listings.html?brand=Mercedes" class="btn-gold">Explore Mercedes</a>
+    </div>
+  </div>
+  <div class="slide" style="--bg: url('https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=1600&q=80')">
+    <div class="slide-overlay"></div>
+    <div class="slide-content">
+      <span class="slide-badge">Sports & Performance</span>
+      <h1 class="slide-title">Lamborghini</h1>
+      <p class="slide-sub">Pure adrenaline, engineered to perfection.</p>
+      <a href="pages/listings.html?brand=Lamborghini" class="btn-gold">Explore Lamborghini</a>
+    </div>
+  </div>
+  <div class="slide" style="--bg: url('https://images.unsplash.com/photo-1617814076367-b759c7d7e738?w=1600&q=80')">
+    <div class="slide-overlay"></div>
+    <div class="slide-content">
+      <span class="slide-badge">Electric Future</span>
+      <h1 class="slide-title">Tesla</h1>
+      <p class="slide-sub">Accelerating the world's transition to sustainable energy.</p>
+      <a href="pages/listings.html?brand=Tesla" class="btn-gold">Explore Tesla</a>
+    </div>
+  </div>
+  <div class="slide" style="--bg: url('https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=1600&q=80')">
+    <div class="slide-overlay"></div>
+    <div class="slide-content">
+      <span class="slide-badge">Prestige Class</span>
+      <h1 class="slide-title">Rolls-Royce</h1>
+      <p class="slide-sub">Above and beyond — the pinnacle of automotive excellence.</p>
+      <a href="pages/listings.html?brand=Rolls-Royce" class="btn-gold">Explore Rolls-Royce</a>
+    </div>
+  </div>
+  <div class="slide" style="--bg: url('https://images.unsplash.com/photo-1580274455191-1c62238fa333?w=1600&q=80')">
+    <div class="slide-overlay"></div>
+    <div class="slide-content">
+      <span class="slide-badge">Japanese Engineering</span>
+      <h1 class="slide-title">Toyota</h1>
+      <p class="slide-sub">Reliability meets innovation — trusted by millions.</p>
+      <a href="pages/listings.html?brand=Toyota" class="btn-gold">Explore Toyota</a>
+    </div>
+  </div>
+
+  <!-- Slider Controls -->
+  <button class="slider-btn prev" id="prevBtn" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
+  <button class="slider-btn next" id="nextBtn" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
+  <div class="slider-dots" id="sliderDots"></div>
+  <div class="slider-progress"><div class="progress-bar" id="progressBar"></div></div>
+</section>
+
+<!-- ═══════════════════════ QUICK SEARCH ═══════════════════════ -->
+<section class="quick-search">
+  <div class="container">
+    <div class="search-card">
+      <h2>Find Your Perfect Car</h2>
+      <form class="search-form" action="pages/listings.html" method="GET">
+        <div class="search-row">
+          <div class="search-field">
+            <label><i class="fas fa-car"></i> Brand</label>
+            <select name="brand">
+              <option value="">All Brands</option>
+              <option>BMW</option><option>Mercedes-Benz</option><option>Toyota</option>
+              <option>Honda</option><option>Lexus</option><option>Ford</option>
+              <option>Tesla</option><option>Lamborghini</option><option>Rolls-Royce</option>
+              <option>Porsche</option><option>Audi</option><option>Range Rover</option>
+              <option>Hyundai</option><option>Kia</option><option>Nissan</option>
+            </select>
+          </div>
+          <div class="search-field">
+            <label><i class="fas fa-calendar"></i> Year</label>
+            <select name="year">
+              <option value="">Any Year</option>
+              <option>2026</option><option>2025</option><option>2024</option>
+              <option>2023</option><option>2022</option><option>2021</option>
+              <option>2020</option><option>2019</option><option>2018</option>
+              <option>2017</option><option>2016 &amp; older</option>
+            </select>
+          </div>
+          <div class="search-field">
+            <label><i class="fas fa-tag"></i> Condition</label>
+            <select name="condition">
+              <option value="">All Conditions</option>
+              <option>Brand New</option>
+              <option>Foreign Used</option>
+              <option>Nigerian Used</option>
+            </select>
+          </div>
+          <div class="search-field">
+            <label><i class="fas fa-naira-sign"></i> Max Budget (₦)</label>
+            <select name="maxPrice">
+              <option value="">No Limit</option>
+              <option value="2000000">₦2,000,000</option>
+              <option value="5000000">₦5,000,000</option>
+              <option value="10000000">₦10,000,000</option>
+              <option value="20000000">₦20,000,000</option>
+              <option value="50000000">₦50,000,000</option>
+              <option value="100000000">₦100,000,000+</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="btn-gold search-btn"><i class="fas fa-search"></i> Search Cars</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ BUYER / SELLER PORTAL ═══════════════════════ -->
+<section class="portal-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>One Platform, Two Journeys</h2>
+      <p>Whether you're buying or selling, EBEVON has you covered with a secure, verified marketplace.</p>
+    </div>
+    <div class="portal-grid">
+      <!-- BUYER PORTAL -->
+      <div class="portal-card buyer-card">
+        <div class="portal-icon"><i class="fas fa-key"></i></div>
+        <h3>I Want to Buy</h3>
+        <ul class="portal-features">
+          <li><i class="fas fa-check-circle"></i> Browse thousands of verified listings</li>
+          <li><i class="fas fa-check-circle"></i> Filter by price, brand, year &amp; condition</li>
+          <li><i class="fas fa-check-circle"></i> View 360° photos &amp; walk-around videos</li>
+          <li><i class="fas fa-check-circle"></i> Check vehicle health score before buying</li>
+          <li><i class="fas fa-check-circle"></i> Secure escrow payment — pay only when satisfied</li>
+          <li><i class="fas fa-check-circle"></i> Request doorstep delivery anywhere in Nigeria</li>
+        </ul>
+        <a href="pages/signup.html?role=buyer" class="btn-gold portal-btn">Start Buying <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <!-- SELLER PORTAL -->
+      <div class="portal-card seller-card">
+        <div class="portal-icon"><i class="fas fa-store"></i></div>
+        <h3>I Want to Sell</h3>
+        <ul class="portal-features">
+          <li><i class="fas fa-check-circle"></i> List your car in minutes</li>
+          <li><i class="fas fa-check-circle"></i> Verified seller badge builds buyer trust</li>
+          <li><i class="fas fa-check-circle"></i> Upload photos, exterior &amp; interior videos</li>
+          <li><i class="fas fa-check-circle"></i> Set your vehicle health bar honestly</li>
+          <li><i class="fas fa-check-circle"></i> Get paid securely via escrow — no fraud</li>
+          <li><i class="fas fa-check-circle"></i> Dealerships can register their brand name</li>
+        </ul>
+        <a href="pages/signup.html?role=seller" class="btn-outline portal-btn">Start Selling <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ HOW ESCROW WORKS ═══════════════════════ -->
+<section class="escrow-section">
+  <div class="container">
+    <div class="section-header light">
+      <span class="section-tag">Secure Transactions</span>
+      <h2>How Our Escrow System Works</h2>
+      <p>Your money is safe until you're 100% satisfied with your vehicle.</p>
+    </div>
+    <div class="escrow-steps">
+      <div class="escrow-step">
+        <div class="step-num">01</div>
+        <div class="step-icon"><i class="fas fa-wallet"></i></div>
+        <h4>Buyer Pays</h4>
+        <p>Buyer deposits payment into EBEVON's secure escrow account. Funds are held safely.</p>
+      </div>
+      <div class="escrow-arrow"><i class="fas fa-chevron-right"></i></div>
+      <div class="escrow-step">
+        <div class="step-num">02</div>
+        <div class="step-icon"><i class="fas fa-car-side"></i></div>
+        <h4>Inspect the Car</h4>
+        <p>Buyer inspects the car physically or receives it via delivery and verifies its condition.</p>
+      </div>
+      <div class="escrow-arrow"><i class="fas fa-chevron-right"></i></div>
+      <div class="escrow-step">
+        <div class="step-num">03</div>
+        <div class="step-icon"><i class="fas fa-shield-check"></i></div>
+        <h4>Buyer Confirms</h4>
+        <p>Buyer clicks "Confirm Receipt" on the platform — verifying they've seen and accepted the car.</p>
+      </div>
+      <div class="escrow-arrow"><i class="fas fa-chevron-right"></i></div>
+      <div class="escrow-step">
+        <div class="step-num">04</div>
+        <div class="step-icon"><i class="fas fa-money-bill-transfer"></i></div>
+        <h4>Seller Gets Paid</h4>
+        <p>Funds are released from escrow directly to the seller's account. Safe. Fast. Done.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ FEATURED LISTINGS PREVIEW ═══════════════════════ -->
+<section class="featured-section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Hot Listings</span>
+      <h2>Featured Cars</h2>
+      <p>Hand-picked, verified listings ready for you to explore.</p>
+    </div>
+    <div class="cars-grid" id="featuredCars">
+      <!-- JS-rendered sample cards -->
+    </div>
+    <div class="text-center mt-40">
+      <a href="pages/listings.html" class="btn-gold">View All Listings <i class="fas fa-arrow-right"></i></a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ BRANDS STRIP ═══════════════════════ -->
+<section class="brands-strip">
+  <div class="container">
+    <p class="brands-label">Trusted Brands on EBEVON</p>
+    <div class="brands-scroll">
+      <span>BMW</span><span>Mercedes-Benz</span><span>Toyota</span><span>Honda</span>
+      <span>Lexus</span><span>Tesla</span><span>Porsche</span><span>Audi</span>
+      <span>Ford</span><span>Range Rover</span><span>Lamborghini</span><span>Rolls-Royce</span>
+      <span>Kia</span><span>Hyundai</span><span>Nissan</span><span>BMW</span>
+      <span>Mercedes-Benz</span><span>Toyota</span><span>Honda</span><span>Lexus</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ TRUST STATS ═══════════════════════ -->
+<section class="stats-section">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <span class="stat-num" data-target="4800">0</span><span class="stat-suffix">+</span>
+        <p>Cars Listed</p>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num" data-target="3200">0</span><span class="stat-suffix">+</span>
+        <p>Verified Sellers</p>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num" data-target="9700">0</span><span class="stat-suffix">+</span>
+        <p>Happy Buyers</p>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num" data-target="100">0</span><span class="stat-suffix">%</span>
+        <p>Escrow Protected</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ CTA BANNER ═══════════════════════ -->
+<section class="cta-banner">
+  <div class="container">
+    <div class="cta-content">
+      <h2>Ready to Buy or Sell?</h2>
+      <p>Join thousands of Nigerians already trading safely on EBEVON.</p>
+      <div class="cta-btns">
+        <a href="pages/signup.html?role=buyer" class="btn-gold">Find a Car</a>
+        <a href="pages/signup.html?role=seller" class="btn-outline">List Your Car</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ FOOTER ═══════════════════════ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <img src="assets/images/logo.jpg" alt="EBEVON" class="footer-logo" />
+        <p>Nigeria's most trusted car marketplace. Buy and sell with confidence using our secure escrow system.</p>
+        <div class="social-links">
+          <a href="https://wa.me/2348132782330" target="_blank" class="social-link whatsapp"><i class="fab fa-whatsapp"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Marketplace</h4>
+        <ul>
+          <li><a href="pages/listings.html">Browse Cars</a></li>
+          <li><a href="pages/listings.html?condition=new">New Cars</a></li>
+          <li><a href="pages/listings.html?condition=used">Used Cars</a></li>
+          <li><a href="pages/sell.html">Sell a Car</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Account</h4>
+        <ul>
+          <li><a href="pages/signup.html">Create Account</a></li>
+          <li><a href="pages/login.html">Log In</a></li>
+          <li><a href="pages/verify.html">Seller Verification</a></li>
+          <li><a href="pages/dashboard-buyer.html">Buyer Dashboard</a></li>
+          <li><a href="pages/dashboard-seller.html">Seller Dashboard</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="pages/how-it-works.html">How It Works</a></li>
+          <li><a href="pages/support.html">Contact Support</a></li>
+          <li><a href="pages/support.html#faq">FAQs</a></li>
+          <li><a href="pages/support.html#delivery">Delivery Info</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact Us</h4>
+        <ul class="contact-list">
+          <li><i class="fas fa-phone"></i> <a href="tel:+2348132782330">0813 278 2330</a></li>
+          <li><i class="fab fa-whatsapp"></i> <a href="https://wa.me/2348132782330" target="_blank">WhatsApp Us</a></li>
+          <li><i class="fas fa-envelope"></i> <a href="mailto:support@ebevon.com">support@ebevon.com</a></li>
+          <li><i class="fas fa-map-marker-alt"></i> Nigeria</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 EBEVON. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Escrow Policy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Floating WhatsApp Button -->
+<a href="https://wa.me/2348132782330" class="whatsapp-float" target="_blank" title="Chat on WhatsApp">
+  <i class="fab fa-whatsapp"></i>
+</a>
+
+<script src="assets/js/main.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/slider.js"></script>
+<script src="assets/js/home.js"></script>
+</body>
+</html>
